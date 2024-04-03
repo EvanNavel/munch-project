@@ -3,4 +3,4 @@
 ## Team Members
 - Mohammad Hujeir
 - Alexander Fiodorov
-- Cameron Cox
+- Cameron Cox (Cameronacox0904@gmail.com)
