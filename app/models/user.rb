@@ -26,9 +26,6 @@ class User < ApplicationRecord
     :posts,
     class_name: 'Post',
     foreign_key: 'user_id',
-    inverse_of: :user
+    inverse_of: :user,
   )
-  has_one :profile, through: :user_profile
-  has_one :user_profile
-
 end

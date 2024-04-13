@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   # root "articles#index"
   root to: redirect('/home')
   get 'home', to: 'pages#home', as: 'home'
-  
+  get 'posts', to: 'posts#index', as: 'user_posts'
 end
