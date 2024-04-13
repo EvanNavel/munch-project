@@ -23,7 +23,9 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
-
+        <li class="nav-item">
+          <%= link_to 'Posts', user_posts_path, class: 'btn btn-outline-secondary' %>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Account Info</a>
         </li>
@@ -38,6 +40,7 @@
             <li><a class="dropdown-item" href="#">Top</a></li>
             <li><a class="dropdown-item" href="#">Newest</a></li>
             <li><a class="dropdown-item" href="#">Hot</a></li>
+
         </li>
         </li>
       </ul>

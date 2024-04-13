@@ -10,7 +10,12 @@
 
     <tr>
 
-      <th>Post</th>
+        <th>Post</th>
+        <th>Difficuly</th>
+        <th>Type Of Meal</th>
+        <th>Cuisine</th>
+        <th>Creator</th>
+        <th>Details</th>
 
     </tr>
 
@@ -25,7 +30,12 @@
       <tr>
 
         <td><%= p.title %></td>
-        <td><%= p.body %></td>
+        <td><%= p.difficulty %></td>
+        <td><%= p.meal %></td>
+        <td><%= p.cuisine %></td>
+        <td><%= p.user.email %></td>
+        <td><%= link_to 'Meal Details', show_posts_path(p), class: 'btn btn-outline-secondary' %>
+
 
       </tr>
 

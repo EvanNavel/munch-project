@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   root to: redirect('/home')
   get 'home', to: 'pages#home', as: 'home'
   get 'posts', to: 'posts#index', as: 'user_posts'
+  get 'posts/:id',to: 'posts#show', as: 'show_posts'
 end

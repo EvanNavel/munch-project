@@ -1,0 +1,19 @@
+<h1><%= @post.title %></h1>
+<ul> Information <br>
+    <li> <%= @post.user.email %></li>
+    <br>
+    <li><%= @post.difficulty %></li>
+    <br>
+    <li><%= @post.cuisine %></li>
+    <br>
+    <li><%= @post.meal %></li>
+    <br>
+</ul>
+<h2> Recipe </h2>
+
+<p><%= @post.body%></p>
+
+
+
+<a><%= link_to 'Back To Posts', user_posts_path, class: 'btn btn-outline-secondary' %></a>
+
