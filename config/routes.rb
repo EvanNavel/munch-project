@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :posts do
     resource :like, only: [:create, :destroy]
+    resource :favorite, only: [:create, :destroy]
     collection do
       get 'search'
     end

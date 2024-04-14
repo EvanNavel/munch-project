@@ -27,6 +27,12 @@
             <%= button_to 'Sweet', post_like_path(post), method: :post, class: 'btn btn-success' %>
           <% end %>
           <%= post.likes.count %> Sweets
+          
+          <% if post.favorited_by?(current_user) %>
+            <%= button_to 'Unfavorite', post_favorite_path(post), method: :delete, class: 'btn btn-warning' %>
+          <% else %>
+            <%= button_to 'Favorite', post_favorite_path(post), method: :post, class: 'btn btn-success' %>
+          <% end %>
         </td>
         <td><%= link_to 'Show Details', post_path(post), class: 'btn btn-outline-secondary' %></td>
       </tr>
