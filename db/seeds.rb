@@ -6,3 +6,17 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+cameron = User.create(
+    email: 'Cameroncox0904@gmail.com',
+    password: 'password'
+)
+
+post1 = Post.create(
+    title: 'moms spaget',
+    body: "the best food in town",
+    meal: 'supper',
+    cuisine: "italian",
+    difficulty: "easy",
+    user: cameron
+)

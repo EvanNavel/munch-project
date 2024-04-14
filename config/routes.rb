@@ -3,10 +3,13 @@
 Rails.application.routes.draw do
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  
+
   # Defines the root path route ("/")
   # root "articles#index"
-  root to: redirect('/home')
-  get 'home', to: 'pages#home', as: 'home'
-  
+  root to: redirect('/posts')
+
+  resources :posts do
+    resource :like, only: [:create, :destroy]
+  end
+
 end

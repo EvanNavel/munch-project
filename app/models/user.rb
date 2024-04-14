@@ -21,4 +21,14 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  has_many(
+    :posts,
+    class_name: 'Post',
+    foreign_key: 'user_id',
+    inverse_of: :user,
+  )
+
+  has_many :likes
+  has_many :liked_posts, through: :likes, source: :post
 end
