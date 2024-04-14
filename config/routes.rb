@@ -8,5 +8,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   root to: redirect('/posts')
   get 'posts', to: 'posts#index', as: 'user_posts'
+  post 'posts', to: 'posts#create'
+  get 'posts/new', to: 'posts#new', as: 'new_post'
   get 'posts/:id',to: 'posts#show', as: 'show_posts'
 end
