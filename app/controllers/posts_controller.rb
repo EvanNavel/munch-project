@@ -3,7 +3,7 @@ class PostsController < ApplicationController
     def index
     # Start Change 1
       if params[:search]
-        @posts = Post.where("title LIKE :search OR body LIKE :search OR meal LIKE :search OR difficulty LIKE :search OR cuisine LIKE :search", search: "%#{params[:search]}%")
+        @posts = Post.where("title ILIKE :search OR body ILIKE :search OR meal ILIKE :search OR difficulty ILIKE :search OR cuisine ILIKE :search", search: "%#{params[:search]}%")
       else
     # End Change 1
         @posts = Post.all
