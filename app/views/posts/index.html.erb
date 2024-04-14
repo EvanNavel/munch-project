@@ -3,7 +3,7 @@
 <table class="table table-striped table-hover">
   <thead class="table-dark">
     <tr>
-        <th>Post</th>
+        <th>Title</th>
         <th>Difficulty</th>
         <th>Type Of Meal</th>
         <th>Cuisine</th>
@@ -28,7 +28,7 @@
           <% end %>
           <%= post.likes.count %> Sweets
         </td>
-        <td><%= link_to 'Meal Details', post_path(post), class: 'btn btn-outline-secondary' %></td>
+        <td><%= link_to 'Show Details', post_path(post), class: 'btn btn-outline-secondary' %></td>
       </tr>
     <% end %>
   </tbody>
