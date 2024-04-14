@@ -6,18 +6,18 @@ class FavoritesController < ApplicationController
     @favorite = @post.favorites.new(user: current_user)
 
     if @favorite.save
-      redirect_to @post, notice: 'You favorited this post.'
+      redirect_to @post, notice: 'You added this post to your cookbook.'
     else
-      redirect_to @post, alert: 'Unable to favorite this post.'
+      redirect_to @post, alert: 'Unable to add this post to your cookbook.'
     end
   end
 
   def destroy
     @favorite = @post.favorites.find_by(user: current_user)
     if @favorite&.destroy
-      redirect_to @post, notice: 'You unfavorited this post.'
+      redirect_to @post, notice: 'You removed this post from your cookbook.'
     else
-      redirect_to @post, alert: 'Unable to unfavorite this post.'
+      redirect_to @post, alert: 'Unable to remove this post from your cookbook.'
     end
   end
 
