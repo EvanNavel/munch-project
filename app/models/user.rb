@@ -28,4 +28,7 @@ class User < ApplicationRecord
     foreign_key: 'user_id',
     inverse_of: :user,
   )
+
+  has_many :likes
+  has_many :liked_posts, through: :likes, source: :post
 end

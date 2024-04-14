@@ -27,7 +27,14 @@ class Post < ApplicationRecord
         foreign_key: 'user_id',
         inverse_of: :posts
     )
-      
+
     validates :title, presence: true
     validates :body, presence: true
-end 
+
+    has_many :likes
+    has_many :likers, through: :likes, source: :user
+
+    def liked_by?(user)
+        likes.exists?(user: user)
+      end
+end

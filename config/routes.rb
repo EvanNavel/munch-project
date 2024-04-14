@@ -7,11 +7,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   root to: redirect('/posts')
-  get 'posts', to: 'posts#index', as: 'posts'
-  post 'posts', to: 'posts#create'
-  get 'posts/new', to: 'posts#new', as: 'new_post'
-  get 'posts/:id',to: 'posts#show', as: 'show_posts'
-  get 'posts/:id/edit', to: 'posts#edit', as: 'edit_post'
-  patch 'posts/:id', to: 'posts#update'
-  delete 'posts/:id', to: 'posts#destroy'
+
+  resources :posts do
+    resource :like, only: [:create, :destroy]
+  end
+
 end
