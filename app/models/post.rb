@@ -34,7 +34,14 @@ class Post < ApplicationRecord
     has_many :likes
     has_many :likers, through: :likes, source: :user
 
+    has_many :favorites
+    has_many :favoriters, through: :favorites, source: :user
+
     def liked_by?(user)
         likes.exists?(user: user)
-      end
+    end
+
+    def favorited_by?(user)
+        favorites.where(user: user).exists?
+    end
 end
