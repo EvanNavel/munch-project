@@ -1,8 +1,13 @@
 class PostsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
     def index
+    # Start Change 1
+      if params[:search]
+        @posts = Post.where("title LIKE :search OR body LIKE :search OR meal LIKE :search OR difficulty LIKE :search OR cuisine LIKE :search", search: "%#{params[:search]}%")
+      else
+    # End Change 1
         @posts = Post.all
-        render :index
+      end
     end
     def show
         @post = Post.find(params[:id])
