@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
     def index
-        @posts = Post.all
+        @posts = Post.all.includes(:likes)
         render :index
     end
     def show

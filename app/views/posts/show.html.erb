@@ -1,5 +1,19 @@
 <h1><%= @post.title %></h1>
-<ul> Information <br>
+
+<div class="sweets-counter">
+  <strong><%= pluralize(@post.likes.count, 'Sweet') %></strong>
+</div>
+
+<% if current_user %>
+  <% if @post.liked_by?(current_user) %>
+    <%= button_to 'Unsweet', post_like_path(@post), method: :delete, class: 'btn btn-warning' %>
+  <% else %>
+    <%= button_to 'Sweet', post_likes_path(@post), method: :post, class: 'btn btn-success' %>
+  <% end %>
+<% end %>
+
+<ul>
+ <br>
     <li> <%= @post.user.email %></li>
     <br>
     <li><%= @post.difficulty %></li>
@@ -9,11 +23,11 @@
     <li><%= @post.meal %></li>
     <br>
 </ul>
+
 <h2> Recipe </h2>
 
-<p><%= @post.body%></p>
+<p><%= @post.body %></p>
 
-
+<br>
 
 <a><%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary' %></a>
-
