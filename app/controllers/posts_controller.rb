@@ -2,8 +2,13 @@ class PostsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
 
     def index
+    # Start Change 1
+      if params[:search]
+        @posts = Post.where("title ILIKE :search OR body ILIKE :search OR meal ILIKE :search OR difficulty ILIKE :search OR cuisine ILIKE :search", search: "%#{params[:search]}%")
+      else
+    # End Change 1
         @posts = Post.all
-        render :index
+      end
     end
 
     def show

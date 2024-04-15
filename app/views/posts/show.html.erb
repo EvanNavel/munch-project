@@ -11,8 +11,6 @@
 
 
 
-
-
 <h1><%= @post.title %></h1>
 <ul> Information <br>
     <li> <%= @post.user.email %></li>
@@ -50,9 +48,10 @@
 
 <%= render partial: 'comments/form', locals: { post: @post } %>
 
-
-  
-  
-
+<% if @post.favorited_by?(current_user) %>
+  <%= button_to 'Remove from Cookbook', post_favorite_path(@post), method: :delete, class: 'btn btn-warning' %>
+<% else %>
+  <%= button_to 'Add to Cookbook', post_favorite_path(@post), method: :post, class: 'btn btn-success' %>
+<% end %>
 
 <a><%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary' %></a>

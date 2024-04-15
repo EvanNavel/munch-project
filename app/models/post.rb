@@ -35,27 +35,39 @@ class Post < ApplicationRecord
     has_many :likes
     has_many :likers, through: :likes, source: :user
 
+    has_many :favorites
+    has_many :favoriters, through: :favorites, source: :user
     has_many :comments, dependent: :destroy
     has_many :flags, dependent: :destroy
     has_many :forks
 
     def liked_by?(user)
         likes.exists?(user: user)
-      end
+    end
 
-      def flagged?(user)
+    def favorited_by?(user)
+        favorites.where(user: user).exists?
+    end
+  
+    
+
+    def liked_by?(user)
+        likes.exists?(user: user)
+    end
+
+    def flagged?(user)
         flags_count.to_i.positive?(user: user)
-      end
+    end
     
-      def forked?
+    def forked?
         forks.any?
-      end
+    end
     
-      def forked_by?(user)
+    def forked_by?(user)
         forks.exists?(user: user)
-      end
+    end
     
-      def forked_from
+    def forked_from
         Post.find_by(id: forked_from_id)
-      end
+    end
 end
