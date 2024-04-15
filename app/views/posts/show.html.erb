@@ -1,3 +1,14 @@
+<div class="flag-button-container">
+  <% if current_user %>
+    <% if current_user.flags.exists?(post_id: @post.id) %>
+      <%= button_to 'Unflag', unflag_post_path(@post), method: :post, class: 'btn btn-danger' %>
+    <% else %>
+      <%= button_to 'Flag', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
+    <% end %>
+    <span class="flag-count"><%= @post.flags_count %></span> Flags
+  <% end %>
+</div>
+
 <h1><%= @post.title %></h1>
 
 <div class="sweets-counter">
@@ -31,7 +42,27 @@
 <% if @post.favorited_by?(current_user) %>
   <%= button_to 'Remove from Cookbook', post_favorite_path(@post), method: :delete, class: 'btn btn-warning' %>
 <% else %>
+
+<%= link_to "Fork this Recipe", new_post_fork_path(@post, title: @post.title, meal: @post.meal, difficulty: @post.difficulty, cuisine: @post.cuisine), method: :get, class: "btn btn-primary" %>
+  
   <%= button_to 'Add to Cookbook', post_favorite_path(@post), method: :post, class: 'btn btn-success' %>
 <% end %>
+
+<hr>
+
+<h2>Comments</h2>
+<% @post.comments.each do |comment| %>
+  <div class="comment-box">
+    <p><%= comment.user.email %></p> 
+    <p><%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+
+    <p><strong>Comment:</strong> <%= comment.body %></p>
+
+    <% if current_user && comment.user == current_user %>
+      <%= button_to 'Delete', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    <% end %>
+  </div>
+<% end %>
+<%= render partial: 'comments/form', locals: { post: @post } %>
 
 <a><%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary' %></a>
