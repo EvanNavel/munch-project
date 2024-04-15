@@ -8,30 +8,23 @@
         <th>Type Of Meal</th>
         <th>Cuisine</th>
         <th>User</th>
-        <th>Likes</th>
+        <th>Sweets</th>
         <th></th>
     </tr>
   </thead>
   <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.title %></td>
-        <td><%= post.difficulty %></td>
-        <td><%= post.meal %></td>
-        <td><%= post.cuisine %></td>
-        <td><%= post.user.email %></td>
-        <td>
-          <% if post.liked_by?(current_user) %>
-            <%= button_to 'Unsweet', post_like_path(post), method: :delete, class: 'btn btn-warning' %>
-          <% else %>
-            <%= button_to 'Sweet', post_like_path(post), method: :post, class: 'btn btn-success' %>
-          <% end %>
-          <%= post.likes.count %> Sweets
-        </td>
-        <td><%= link_to 'Show Details', post_path(post), class: 'btn btn-outline-secondary' %></td>
-      </tr>
-    <% end %>
-  </tbody>
+  <% @posts.each do |post| %>
+    <tr>
+      <td><%= post.title %></td>
+      <td><%= post.difficulty %></td>
+      <td><%= post.meal %></td>
+      <td><%= post.cuisine %></td>
+      <td><%= post.user.email %></td>
+      <td><%= pluralize(post.likes.count, 'Sweet') %></td>
+      <td><%= link_to 'Meal Details', post_path(post), class: 'btn btn-outline-secondary' %></td>
+    </tr>
+  <% end %>
+</tbody>
 </table>
 
 <p>
