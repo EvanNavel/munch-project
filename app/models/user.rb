@@ -32,6 +32,11 @@ class User < ApplicationRecord
   has_many :likes
   has_many :liked_posts, through: :likes, source: :post
 
+  has_many :comments
+  has_many :flags, dependent: :destroy
+  has_many :forks
+
   has_many :favorites
   has_many :favorited_posts, through: :favorites, source: :post
+
 end

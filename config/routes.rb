@@ -1,15 +1,17 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
   root to: redirect('/posts')
 
   resources :posts do
+    resources :forks, only: [:new, :create] 
     resource :like, only: [:create, :destroy]
+
+    resources :comments
+    member do
+      post 'flag'
+      post 'unflag'
+      
     resource :favorite, only: [:create, :destroy]
     collection do
       get 'search'
