@@ -2,15 +2,30 @@
 
 Rails.application.routes.draw do
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # Redirect root path to "/posts"
   root to: redirect('/posts')
 
   resources :posts do
+    # Routes for managing likes
     resource :like, only: [:create, :destroy]
+
+    # Routes for managing favorites
     resource :favorite, only: [:create, :destroy]
+
+    # Routes for managing forks
+    resources :forks, only: [:new, :create] 
+
+    # Routes for managing comments
+    resources :comments
+
+    # Custom member routes for flagging/unflagging posts
+    member do
+      post 'flag'
+      post 'unflag'
+    end
+
+    # Custom collection route for searching posts
     collection do
       get 'search'
     end

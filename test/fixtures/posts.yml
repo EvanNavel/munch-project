@@ -2,15 +2,16 @@
 #
 # Table name: posts
 #
-#  id         :bigint           not null, primary key
-#  body       :string
-#  cuisine    :string
-#  difficulty :string
-#  meal       :string
-#  title      :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  user_id    :bigint
+#  id          :bigint           not null, primary key
+#  body        :string
+#  cuisine     :string
+#  difficulty  :string
+#  flags_count :integer
+#  meal        :string
+#  title       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :bigint
 #
 # Indexes
 #
