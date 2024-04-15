@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: flags
+# Table name: likes
 #
 #  id         :bigint           not null, primary key
 #  created_at :datetime         not null
@@ -10,8 +10,8 @@
 #
 # Indexes
 #
-#  index_flags_on_post_id  (post_id)
-#  index_flags_on_user_id  (user_id)
+#  index_likes_on_post_id  (post_id)
+#  index_likes_on_user_id  (user_id)
 #
 # Foreign Keys
 #
@@ -20,7 +20,7 @@
 #
 require "test_helper"
 
-class FlagTest < ActiveSupport::TestCase
+class LikeTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,6 +1,5 @@
 class PostsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
-
     def index
     # Start Change 1
       if params[:search]
@@ -10,10 +9,9 @@ class PostsController < ApplicationController
         @posts = Post.all
       end
     end
-
     def show
-       @post = Post.includes(:comments).find(params[:id])
-       render :show
+        @post = Post.find(params[:id])
+        render :show
 
     end
 
@@ -64,38 +62,4 @@ class PostsController < ApplicationController
         end
       end
 
-      def flag
-        @post = Post.find(params[:id])
-        if current_user.flags.exists?(post_id: @post.id)
-          redirect_to @post, alert: 'You have already flagged this post.'
-        else
-          @flag = @post.flags.build(user_id: current_user.id)
-          if @flag.save
-            redirect_to @post, notice: 'Post has been flagged.'
-          else
-            redirect_to @post, alert: 'Failed to flag the post.'
-          end
-        end
-      end
-    
-      def unflag
-        @post = Post.find(params[:id])
-        @flag = current_user.flags.find_by(post_id: @post.id)
-        if @flag.destroy
-          redirect_to @post, notice: 'Post has been unflagged.'
-        else
-          redirect_to @post, alert: 'Failed to unflag the post.'
-        end
-      end
-
-      def fork
-        @post = Post.find(params[:id]) 
-        @fork = current_user.forks.build(post: @post)
-        if @fork.save
-          redirect_to @fork, notice: 'Recipe forked successfully.'
-        else
-          redirect_to @post, alert: 'Failed to fork the recipe.'
-        end
-      end 
-      
-    end
+end

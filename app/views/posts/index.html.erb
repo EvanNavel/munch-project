@@ -1,0 +1,39 @@
+<h1>Posts</h1>
+
+<table class="table table-striped table-hover">
+  <thead class="table-dark">
+    <tr>
+        <th>Title</th>
+        <th>Difficulty</th>
+        <th>Type Of Meal</th>
+        <th>Cuisine</th>
+        <th>User</th>
+        <th>Likes</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.difficulty %></td>
+        <td><%= post.meal %></td>
+        <td><%= post.cuisine %></td>
+        <td><%= post.user.email %></td>
+        <td>
+          <% if post.liked_by?(current_user) %>
+            <%= button_to 'Unsweet', post_like_path(post), method: :delete, class: 'btn btn-warning' %>
+          <% else %>
+            <%= button_to 'Sweet', post_like_path(post), method: :post, class: 'btn btn-success' %>
+          <% end %>
+          <%= post.likes.count %> Sweets
+        </td>
+        <td><%= link_to 'Show Details', post_path(post), class: 'btn btn-outline-secondary' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <%= link_to "Create New Post", new_post_path, class: 'btn btn-primary' %>
+</p>

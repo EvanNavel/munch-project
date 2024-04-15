@@ -1,0 +1,18 @@
+# == Schema Information
+#
+# Table name: profiles
+#
+#  id         :bigint           not null, primary key
+#  body       :string
+#  heading    :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+one:
+  heading: MyString
+  body: MyString
+
+two:
+  heading: MyString
+  body: MyString
