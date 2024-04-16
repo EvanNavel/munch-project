@@ -14,23 +14,8 @@
       id="navbarSupportedContent">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <%= link_to 'Posts', posts_path, class: 'nav-link # {active_class(posts_path)} btn btn-link' %>
+          <%= link_to 'Posts', posts_path, class: 'nav-link #{active_class(posts_path)} btn btn-link' %>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Account Info</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Top Posts</a>
-        </li>
-        
-              <ul class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Top</a></li>
-          <li><a class="dropdown-item" href="#">Newest</a></li>
-          <li><a class="dropdown-item" href="#">Hot</a></li>
-        </ul>
-      </ul>
       </ul>
 
       <div class="topnav">
@@ -39,7 +24,6 @@
         <%= submit_tag "Search" %>
         <% end %>
       </div>
-
 
       <ul class="navbar-nav">
         <% if user_signed_in? %>
@@ -66,7 +50,6 @@
     <li class="nav-item">
         <%= link_to 'Home', posts_path, class: "nav-link #{active_class(posts_path)} btn btn-link" %>
     </li>
-</ul>
 </ul>
 </div>
 </div>
