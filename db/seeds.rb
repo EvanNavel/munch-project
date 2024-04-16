@@ -18,5 +18,6 @@ post1 = Post.create(
     meal: 'supper',
     cuisine: "italian",
     difficulty: "easy",
-    user: cameron
+    user: cameron,
+    created_at: 2.weeks.ago
 )
