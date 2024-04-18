@@ -46,7 +46,6 @@
   <% end %>
   <%= render partial: 'comments/form', locals: { post: @post } %>
 
-  <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 
   <div class="flag-button-container mt-3">
     <% if current_user %>
@@ -55,7 +54,11 @@
       <% else %>
         <%= button_to 'Flag this Recipe', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
       <% end %>
-      <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
+      <% if @post.flags_count > 0 %>
+        <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
+      <% else %>
+      <% end %>
     <% end %>
   </div>
+    <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 </div>
