@@ -1,9 +1,11 @@
 <div class="container mt-5">
   <h1 class="mb-4"><%= @post.title %></h1>
 
-  <div class="sweets-counter mb-3">
+<div class="sweets-counter mb-3">
+  <% if @post.likes.count > 0 %>
     <strong><%= pluralize(@post.likes.count, 'Sweet') %></strong>
-  </div>
+  <% end %>
+</div>
 
   <% if current_user %>
     <% if @post.liked_by?(current_user) %>
