@@ -47,18 +47,18 @@
   <%= render partial: 'comments/form', locals: { post: @post } %>
 
 
-  <div class="flag-button-container mt-3">
-    <% if current_user %>
-      <% if current_user.flags.exists?(post_id: @post.id) %>
-        <%= button_to 'Unflag', unflag_post_path(@post), method: :post, class: 'btn btn-danger' %>
-      <% else %>
-        <%= button_to 'Flag this Recipe', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
-      <% end %>
-      <% if @post.flags_count > 0 %>
-        <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
-      <% else %>
-      <% end %>
+<div class="flag-button-container mt-3">
+  <% if current_user %>
+    <% if current_user.flags.exists?(post_id: @post.id) %>
+      <%= button_to 'Unflag', unflag_post_path(@post), method: :post, class: 'btn btn-danger' %>
+    <% else %>
+      <%= button_to 'Flag this Recipe', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
     <% end %>
-  </div>
+    <% if @post.flags_count.to_i > 0 %>
+      <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
+    <% end %>
+  <% end %>
+</div>
+
     <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 </div>
