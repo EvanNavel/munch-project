@@ -32,6 +32,11 @@
     <%= button_to 'Add to Cookbook', post_favorite_path(@post), method: :post, class: 'btn btn-success mb-3' %>
   <% end %>
 
+  <% if current_user == @post.user %>
+    <hr>
+    <%= link_to 'Edit this Recipe', edit_post_path(@post), class: 'btn btn-primary mt-3'%>
+    <%= button_to 'Delete this Recipe', post_path(@post), method: :delete, data: { turbo: false }, class: 'btn btn-danger mt-3', form: { class: 'd-inline' } %>
+  <% end %>
   <hr>
 
   <h2 class="mb-3">Comments</h2>

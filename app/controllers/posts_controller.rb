@@ -58,8 +58,17 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
+
+    @post.favorites.each do |favorite|
+      favorite.destroy
+    end
+
+    @post.forks.each do |fork|
+      fork.destroy
+    end
+
     @post.destroy
-    flash[:success] = 'Post was successfully destroyed.'
+    flash[:success] = 'Post was successfully deleted.'
     redirect_to posts_url
   end
 
