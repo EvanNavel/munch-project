@@ -1,0 +1,40 @@
+<div>
+  <h2>Profile</h2>
+  <p><strong>User:</strong> <%= @user.email %></p>
+  <p><strong>Name:</strong> <%= @profile.name %></p>
+  <p><strong>Bio:</strong> <%= @profile.bio %></p>
+</div>
+
+<% if current_user == @user %>
+  <%= link_to "Edit Profile", edit_user_profile_path(@user) %>
+<% end %>
+<hr>
+
+  <h3>Recipes:</h3>
+  <br>
+  
+  <% @user.posts.each do |post| %>
+  <div>
+    <p><strong>Title:</strong> <%= post.title %></p>
+    <p><strong>Body:</strong> <%= post.body %></p>
+    <p><strong>Cuisine:</strong> <%= post.cuisine %></p>
+    <p><strong>Difficulty:</strong> <%= post.difficulty %></p>
+    <p><strong>Meal:</strong> <%= post.meal %></p>
+    
+    <div class="post-interactions">
+      <div class="post-likes">
+        <h4>LIKES</h4>
+        <p><strong><%= post.likes.count %> Sweets</strong></p>
+        
+      
+      <div class="post-comments">
+        <h4>COMMENTS</h4>
+        <% post.comments.each do |comment| %>
+          <p><strong><%= comment.user.email %>:</strong> <%= comment.body %></p>
+          
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <hr>
+<% end %>

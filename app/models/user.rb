@@ -38,4 +38,16 @@ class User < ApplicationRecord
   has_many :comments
   has_many :flags, dependent: :destroy
   has_many :forks
+
+  has_one :profile
+
+  after_create :create_user_profile
+
+  private
+
+
+  def create_user_profile
+    self.create_profile if self.profile.nil?
+  end
+
 end
