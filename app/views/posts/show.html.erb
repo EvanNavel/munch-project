@@ -1,9 +1,11 @@
 <div class="container mt-5">
   <h1 class="mb-4"><%= @post.title %></h1>
 
-  <div class="sweets-counter mb-3">
+<div class="sweets-counter mb-3">
+  <% if @post.likes.count > 0 %>
     <strong><%= pluralize(@post.likes.count, 'Sweet') %></strong>
-  </div>
+  <% end %>
+</div>
 
   <% if current_user %>
     <% if @post.liked_by?(current_user) %>
@@ -30,6 +32,11 @@
     <%= button_to 'Add to Cookbook', post_favorite_path(@post), method: :post, class: 'btn btn-success mb-3' %>
   <% end %>
 
+  <% if current_user == @post.user %>
+    <hr>
+    <%= link_to 'Edit this Recipe', edit_post_path(@post), class: 'btn btn-primary mt-3'%>
+    <%= button_to 'Delete this Recipe', post_path(@post), method: :delete, data: { turbo: false }, class: 'btn btn-danger mt-3', form: { class: 'd-inline' } %>
+  <% end %>
   <hr>
 
   <h2 class="mb-3">Comments</h2>
@@ -46,16 +53,19 @@
   <% end %>
   <%= render partial: 'comments/form', locals: { post: @post } %>
 
-  <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 
-  <div class="flag-button-container mt-3">
-    <% if current_user %>
-      <% if current_user.flags.exists?(post_id: @post.id) %>
-        <%= button_to 'Unflag', unflag_post_path(@post), method: :post, class: 'btn btn-danger' %>
-      <% else %>
-        <%= button_to 'Flag this Recipe', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
-      <% end %>
+<div class="flag-button-container mt-3">
+  <% if current_user %>
+    <% if current_user.flags.exists?(post_id: @post.id) %>
+      <%= button_to 'Unflag', unflag_post_path(@post), method: :post, class: 'btn btn-danger' %>
+    <% else %>
+      <%= button_to 'Flag this Recipe', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
+    <% end %>
+    <% if @post.flags_count.to_i > 0 %>
       <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
     <% end %>
-  </div>
+  <% end %>
+</div>
+
+    <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 </div>

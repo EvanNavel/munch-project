@@ -1,0 +1,12 @@
+<h1>Edit Post</h1>
+ 
+<%= bootstrap_form_with model: @post, url: post_path(@post), method: :patch, data: { turbo: false } do |f| %>
+ 
+  <%= f.text_field :title %>
+  <%= f.text_area :body %>
+  <%= f.text_field :meal %>
+  <%= f.text_field :difficulty %>
+  <%= f.text_field :cuisine %>
+  <%= f.submit "Update Post" %>
+ 
+<% end %>

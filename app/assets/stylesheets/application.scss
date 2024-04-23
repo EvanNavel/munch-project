@@ -13,14 +13,37 @@
  */
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
+/* Import statements */
 @import "yeti/variables";
 @import "bootstrap";
 @import "yeti/bootswatch";
-
 @import "rails_bootstrap_forms";
 
+/* Variables */
+$font-family-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+$color-grey-light: #e5e5e5;
+$color-grey: #727272;
+$color-grey-dark: #343a40;
+$color-background-light: #f8f9fa;
+$color-success: #28a745;
+$color-warning: #ffc107;
+$color-danger: #dc3545;
+$color-primary: #007bff;
+$color-secondary: #6c757d;
+
+/* Reusable mixins */
+@mixin font-serif {
+  font-family: $font-family-serif;
+}
+
+@mixin btn-color($color) {
+  background-color: $color;
+  border-color: $color;
+}
+
+/* Base styles */
 label.required:after {
-  content:" *";
+  content: " *";
 }
 
 main {
@@ -30,10 +53,165 @@ main {
 .alert-dismissible {
   padding-left: $alert-dismissible-padding-r;
 }
-.logo-image{
+
+.logo-image {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   overflow: hidden;
   margin-top: -6px;
+}
+
+/* Blog styles */
+.blog-header {
+  line-height: 1;
+  border-bottom: 1px solid $color-grey-light;
+}
+
+.blog-header-logo {
+  @include font-serif;
+  font-size: 2.25rem;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @include font-serif;
+}
+
+.display-4 {
+  font-size: 2.5rem;
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
+}
+
+/* Navigation styles */
+.nav-scroller {
+  position: relative;
+  z-index: 2;
+  height: 2.75rem;
+  overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  margin-top: -1px;
+  overflow-x: auto;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-scroller .nav-link {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: .875rem;
+}
+
+/* Card styles */
+.card-img-right {
+  height: 100%;
+  border-radius: 0 3px 3px 0;
+}
+
+.flex-auto {
+  flex: 0 0 auto;
+}
+
+.h-250 { height: 250px; }
+@media (min-width: 768px) {
+  .h-md-250 { height: 250px; }
+}
+
+/* Pagination styles */
+.blog-pagination {
+  margin-bottom: 4rem;
+}
+
+.blog-pagination > .btn {
+  border-radius: 2rem;
+}
+
+/* Blog post styles */
+.blog-post {
+  margin-bottom: 4rem;
+}
+
+.blog-post-title {
+  margin-bottom: .25rem;
+  font-size: 2.5rem;
+}
+
+.blog-post-meta {
+  margin-bottom: 1.25rem;
+  color: $color-grey;
+}
+
+/* Footer styles */
+.blog-footer {
+  padding: 2.5rem 0;
+  color: $color-grey;
+  text-align: center;
+  background-color: $color-background-light;
+  border-top: .05rem solid $color-grey-light;
+}
+
+.blog-footer p:last-child {
+  margin-bottom: 0;
+}
+
+/* Recipe attributes styles */
+.list-group-item {
+  font-size: 1.2em;
+  color: $color-grey;
+  background-color: $color-background-light;
+  border: none;
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+}
+
+.list-group-item:last-child {
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+
+/* Container styles */
+.container {
+  padding: 20px;
+  background-color: $color-background-light;
+}
+
+/* Title styles */
+h1 {
+  font-size: 3em;
+  color: $color-grey-dark;
+}
+
+/* Button styles */
+.btn-success {
+  @include btn-color($color-success);
+}
+
+.btn-warning {
+  @include btn-color($color-warning);
+}
+
+.btn-danger {
+  @include btn-color($color-danger);
+}
+
+.btn-primary {
+  @include btn-color($color-primary);
+}
+
+.btn-outline-secondary {
+  color: $color-secondary;
+  border-color: $color-secondary;
 }
