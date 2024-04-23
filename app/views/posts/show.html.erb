@@ -16,7 +16,7 @@
   <% end %>
 
   <ul class="list-group mb-3">
-    <li class="list-group-item">Author: <%= @post.user.email %></li>
+    <li class="list-group-item">Author: <%= link_to @post.user.email, user_profile_path(@post.user) %></li>
     <li class="list-group-item">Difficulty: <%= @post.difficulty %></li>
     <li class="list-group-item">Cuisine: <%= @post.cuisine %></li>
     <li class="list-group-item">Meal: <%= @post.meal %></li>

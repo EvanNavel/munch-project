@@ -16,6 +16,11 @@
         <li class="nav-item">
           <%= link_to 'Posts', posts_path, class: 'nav-link #{active_class(posts_path)} btn btn-link' %>
         </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "My Profile", user_profile_path(current_user), class: "nav-link #{active_class(user_profile_path(current_user))} btn btn-link" %>
+          </li>
+        <% end %>
       </ul>
 
       <div class="topnav">
