@@ -27,19 +27,20 @@ class User < ApplicationRecord
     class_name: 'Post',
     foreign_key: 'user_id',
     inverse_of: :user,
+    :dependent => :destroy,
   )
   # Work
-  has_many :likes
-  has_many :liked_posts, through: :likes, source: :post
+  has_many :likes, :dependent => :destroy
+  has_many :liked_posts, through: :likes, source: :post, :dependent => :destroy
 
-  has_many :favorites
-  has_many :favorited_posts, through: :favorites, source: :post
+  has_many :favorites, :dependent => :destroy
+  has_many :favorited_posts, through: :favorites, source: :post, :dependent => :destroy
 
-  has_many :comments
-  has_many :flags, dependent: :destroy
-  has_many :forks
+  has_many :comments, :dependent => :destroy
+  has_many :flags, :dependent => :destroy
+  has_many :forks, :dependent => :destroy
 
-  has_one :profile
+  has_one :profile, :dependent => :destroy
 
   after_create :create_user_profile
 
