@@ -30,4 +30,9 @@ Rails.application.routes.draw do
       get 'search'
     end
   end
+
+  resources :users, only: [:show] do
+    resource :profile, only: [:show, :edit, :update]
+  end
+  
 end
