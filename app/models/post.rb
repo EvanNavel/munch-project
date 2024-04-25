@@ -32,11 +32,11 @@ class Post < ApplicationRecord
     validates :title, presence: true
     validates :body, presence: true
 
-    has_many :likes
-    has_many :likers, through: :likes, source: :user
+    has_many :likes, :dependent => :destroy
+    has_many :likers, through: :likes, source: :user, :dependent => :destroy
 
-    has_many :favorites
-    has_many :favoriters, through: :favorites, source: :user
+    has_many :favorites, :dependent => :destroy
+    has_many :favoriters, through: :favorites, source: :user, :dependent => :destroy
 
     has_many :comments, dependent: :destroy
     has_many :flags, dependent: :destroy
