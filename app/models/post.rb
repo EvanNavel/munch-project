@@ -32,6 +32,8 @@ class Post < ApplicationRecord
     validates :title, presence: true
     validates :body, presence: true
 
+    has_one_attached :image
+
     has_many :likes
     has_many :likers, through: :likes, source: :user
 
@@ -41,6 +43,9 @@ class Post < ApplicationRecord
     has_many :comments, dependent: :destroy
     has_many :flags, dependent: :destroy
     has_many :forks
+
+    validate :image_type, :image_size
+
 
     def liked_by?(user)
         likes.exists?(user: user)
@@ -64,5 +69,19 @@ class Post < ApplicationRecord
 
     def forked_from
         Post.find_by(id: forked_from_id)
+    end
+
+    private
+
+    def image_type
+        if image.attached? && !image.content_type.in?(%w(image/jpeg image/png))
+        errors.add(:image, "must be a JPEG or PNG")
+    end
+    end
+
+    def image_size
+        if image.attached? && image.byte_size > 5.megabytes
+        errors.add(:image, "size must be less than 5MB")
+    end
     end
 end

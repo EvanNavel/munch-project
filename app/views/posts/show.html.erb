@@ -1,11 +1,11 @@
 <div class="container mt-5">
   <h1 class="mb-4"><%= @post.title %></h1>
 
-<div class="sweets-counter mb-3">
-  <% if @post.likes.count > 0 %>
-    <strong><%= pluralize(@post.likes.count, 'Sweet') %></strong>
-  <% end %>
-</div>
+  <div class="sweets-counter mb-3">
+    <% if @post.likes.count > 0 %>
+      <strong><%= pluralize(@post.likes.count, 'Sweet') %></strong>
+    <% end %>
+  </div>
 
   <% if current_user %>
     <% if @post.liked_by?(current_user) %>
@@ -21,6 +21,12 @@
     <li class="list-group-item">Cuisine: <%= @post.cuisine %></li>
     <li class="list-group-item">Meal: <%= @post.meal %></li>
   </ul>
+
+  <% if @post.image.attached? %>
+    <div>
+      <%= image_tag @post.image %>
+    </div>
+  <% end %>
 
   <h2 class="mb-3">Recipe</h2>
   <p class="mb-3"><%= @post.body %></p>
@@ -53,19 +59,18 @@
   <% end %>
   <%= render partial: 'comments/form', locals: { post: @post } %>
 
-
-<div class="flag-button-container mt-3">
-  <% if current_user %>
-    <% if current_user.flags.exists?(post_id: @post.id) %>
-      <%= button_to 'Unflag', unflag_post_path(@post), method: :post, class: 'btn btn-danger' %>
-    <% else %>
-      <%= button_to 'Flag this Recipe', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
+  <div class="flag-button-container mt-3">
+    <% if current_user %>
+      <% if current_user.flags.exists?(post_id: @post.id) %>
+        <%= button_to 'Unflag', unflag_post_path(@post), method: :post, class: 'btn btn-danger' %>
+      <% else %>
+        <%= button_to 'Flag this Recipe', flag_post_path(@post), method: :post, class: 'btn btn-warning' %>
+      <% end %>
+      <% if @post.flags_count.to_i > 0 %>
+        <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
+      <% end %>
     <% end %>
-    <% if @post.flags_count.to_i > 0 %>
-      <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
-    <% end %>
-  <% end %>
-</div>
+  </div>
 
-    <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
+  <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 </div>
