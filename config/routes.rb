@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   devise_for :users
 
@@ -13,8 +11,8 @@ Rails.application.routes.draw do
     # Routes for managing favorites
     resource :favorite, only: [:create, :destroy]
 
-    # Routes for managing forks
-    resources :forks, only: [:new, :create] 
+    # Routes for managing forks, added :show
+    resources :forks, only: [:new, :create, :show]
 
     # Routes for managing comments
     resources :comments
@@ -31,8 +29,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Routes for user profiles
   resources :users, only: [:show] do
     resource :profile, only: [:show, :edit, :update]
   end
-  
+
 end
