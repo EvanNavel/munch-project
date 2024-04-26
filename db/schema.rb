@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_23_004900) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_26_033316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,16 +75,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_004900) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
+    t.text "body"
+    t.string "meal"
+    t.string "difficulty"
+    t.string "cuisine"
     t.index ["post_id"], name: "index_forks_on_post_id"
     t.index ["user_id"], name: "index_forks_on_user_id"
   end
 
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_likes_on_post_id"
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -143,7 +149,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_004900) do
   add_foreign_key "flags", "users"
   add_foreign_key "forks", "posts"
   add_foreign_key "forks", "users"
-  add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "users"

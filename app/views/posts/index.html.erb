@@ -13,15 +13,15 @@
     </tr>
   </thead>
   <tbody>
-    <% @posts.each do |post| %>
+    <% @items.each do |item| %>
       <tr>
-        <td><%= link_to post.title, post_path(post) %></td>
-        <td><%= post.difficulty %></td>
-        <td><%= post.meal %></td>
-        <td><%= post.cuisine %></td>
-        <td><%= post.user.email %></td>
-        <td><%= post.created_at.strftime("%B %d, %Y") %></td>
-        <td><%= pluralize(post.likes.count, 'Sweet') %></td>
+        <td><%= link_to item.title, item.is_a?(Post) ? post_path(item) : post_fork_path(item.post, item) %></td>
+        <td><%= item.difficulty %></td>
+        <td><%= item.meal %></td>
+        <td><%= item.cuisine %></td>
+        <td><%= item.user.email %></td>
+        <td><%= item.created_at.strftime("%B %d, %Y") %></td>
+        <td><%= pluralize(item.likes.count, 'Sweet') %></td>
       </tr>
     <% end %>
   </tbody>

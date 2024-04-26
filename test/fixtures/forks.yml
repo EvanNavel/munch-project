@@ -3,6 +3,11 @@
 # Table name: forks
 #
 #  id         :bigint           not null, primary key
+#  body       :text
+#  cuisine    :string
+#  difficulty :string
+#  meal       :string
+#  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  post_id    :bigint           not null

@@ -34,7 +34,7 @@ class Post < ApplicationRecord
 
     has_one_attached :image
 
-    has_many :likes
+    has_many :likes, as: :likeable
     has_many :likers, through: :likes, source: :user
 
     has_many :favorites
@@ -70,6 +70,20 @@ class Post < ApplicationRecord
     def forked_from
         Post.find_by(id: forked_from_id)
     end
+
+def display_attributes
+    {
+      title: title,
+      body: body,
+      meal: meal,
+      difficulty: difficulty,
+      cuisine: cuisine,
+      user_email: user.email,
+      created_at: created_at,
+      likes_count: likes.count
+    }
+  end
+
 
     private
 

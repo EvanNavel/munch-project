@@ -2,18 +2,15 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    if params[:search]
-      @posts = Post.where("title ILIKE :search OR body ILIKE :search OR meal ILIKE :search OR difficulty ILIKE :search OR cuisine ILIKE :search", search: "%#{params[:search]}%").includes(:likes)
-    else
-      @posts = Post.all.includes(:likes)
-    end
+    posts = Post.where("title ILIKE :search OR body ILIKE :search OR meal ILIKE :search OR difficulty ILIKE :search OR cuisine ILIKE :search", search: "%#{params[:search]}%").includes(:likes, :user)
+    forks = Fork.all.includes(:user)
+
+    @items = (posts + forks).sort_by(&:created_at).reverse
 
     if params[:sort_by] == 'date'
-      @posts = @posts.order(created_at: :desc)
+      @items.sort_by!(&:created_at).reverse!
     elsif params[:sort_by] == 'likes'
-      @posts = @posts.left_joins(:likes)
-                     .group(:id)
-                     .order('COUNT(likes.id) DESC')
+      @items = @items.sort_by { |item| item.respond_to?(:likes) ? item.likes.size : 0 }.reverse
     end
 
     render :index
@@ -58,15 +55,8 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-
-    @post.favorites.each do |favorite|
-      favorite.destroy
-    end
-
-    @post.forks.each do |fork|
-      fork.destroy
-    end
-
+    @post.favorites.each(&:destroy)
+    @post.forks.each(&:destroy)
     @post.destroy
     flash[:success] = 'Post was successfully deleted.'
     redirect_to posts_url
