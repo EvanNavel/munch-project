@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show,:system_destroy]
 
   def index
     if params[:search]
@@ -71,6 +71,21 @@ class PostsController < ApplicationController
     flash[:success] = 'Post was successfully deleted.'
     redirect_to posts_url
   end
+  def system_destroy
+    @post = Post.find(params[:id])
+
+    @post.favorites.each do |favorite|
+      favorite.destroy
+    end
+
+    @post.forks.each do |fork|
+      fork.destroy
+    end
+
+    @post.destroy
+    flash[:success] = 'Post was deleted due to poor perfomance.'
+    redirect_to posts_url
+  end
 
   def require_permission
     @user = User.find(params[:user_id])
@@ -79,18 +94,21 @@ class PostsController < ApplicationController
       redirect_to user_path(@user)
     end
   end
-
   def flag
     @post = Post.find(params[:id])
+
     if current_user.flags.exists?(post_id: @post.id)
-      redirect_to @post, alert: 'You have already flagged this post.'
+      redirect_to post_path, alert: 'You have already flagged this post.'
+      return
+    end
+
+    @flag = @post.flags.build(user_id: current_user.id)
+
+    if @flag.save
+      check_flag_threshold
+      redirect_to @post, notice: 'Post has been flagged.'
     else
-      @flag = @post.flags.build(user_id: current_user.id)
-      if @flag.save
-        redirect_to @post, notice: 'Post has been flagged.'
-      else
-        redirect_to @post, alert: 'Failed to flag the post.'
-      end
+      redirect_to @post, alert: 'Failed to flag the post.'
     end
   end
 
@@ -118,5 +136,17 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:title, :body, :meal, :difficulty, :cuisine)
+  end
+  def check_flag_threshold
+    if @post.flags.count >= 2
+      system_destroy
+    end
+  end
+
+  def system_destroy
+    @post.favorites.destroy_all
+    @post.forks.destroy_all
+    @post.destroy
+    flash[:success] = 'Post was deleted due to poor performance.'
   end
 end
