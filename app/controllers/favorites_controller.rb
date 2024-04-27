@@ -13,11 +13,11 @@ class FavoritesController < ApplicationController
   end
 
   def destroy
-    @favorite = @favoritable.favorites.find_by(user: current_user)
+    @favorite = Favorite.find_by(id: params[:id], user: current_user)
     if @favorite&.destroy
-      redirect_to [@favoritable], notice: 'You removed this from your cookbook.'
+      redirect_back(fallback_location: root_path, notice: 'You removed this from your cookbook.')
     else
-      redirect_to [@favoritable], alert: 'Unable to remove from your cookbook.'
+      redirect_back(fallback_location: root_path, alert: 'Unable to remove from your cookbook.')
     end
   end
 
