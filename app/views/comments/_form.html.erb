@@ -1,10 +1,8 @@
-<%= form_with(model: [@post, @post.comments.build], url: post_comments_path(@post)) do |form| %>
-
+<%= form_with(model: [@parent, @comment], url: post_comments_path(@parent), local: true) do |form| %>
   <div class="field">
-    <%= form.label :Comment %><br>
+    <%= form.label :body, 'Comment' %>
     <%= form.text_area :body %>
   </div>
-
   <div class="actions">
     <%= form.submit "Submit Comment" %>
   </div>

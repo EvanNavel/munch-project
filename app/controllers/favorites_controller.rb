@@ -1,32 +1,32 @@
 class FavoritesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: [:create, :destroy]
+  before_action :set_favoritable
 
   def create
-    @favorite = @post.favorites.new(user: current_user)
+    @favorite = current_user.favorites.build(favoritable: @favoritable)
 
     if @favorite.save
-      redirect_to @post, notice: 'You added this post to your cookbook.'
+      redirect_to [@favoritable], notice: 'You added this to your cookbook.'
     else
-      redirect_to @post, alert: 'Unable to add this post to your cookbook.'
+      redirect_to [@favoritable], alert: 'Unable to add to your cookbook.'
     end
   end
 
   def destroy
-    @favorite = @post.favorites.find_by(user: current_user)
+    @favorite = @favoritable.favorites.find_by(user: current_user)
     if @favorite&.destroy
-      redirect_to @post, notice: 'You removed this post from your cookbook.'
+      redirect_to [@favoritable], notice: 'You removed this from your cookbook.'
     else
-      redirect_to @post, alert: 'Unable to remove this post from your cookbook.'
+      redirect_to [@favoritable], alert: 'Unable to remove from your cookbook.'
     end
   end
 
   private
 
-  def set_post
-    @post = Post.find_by(id: params[:post_id])
-    unless @post
-      redirect_to posts_path, alert: 'Post not found.'
-    end
+  def set_favoritable
+    resource, id = request.path.split('/')[1, 2]
+    @favoritable = resource.singularize.classify.constantize.find(id)
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: 'Item not found.'
   end
 end

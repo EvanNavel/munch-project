@@ -23,14 +23,15 @@
 #  fk_rails_...  (post_id => posts.id)
 #  fk_rails_...  (user_id => users.id)
 #
-
 class Fork < ApplicationRecord
   belongs_to :user
   belongs_to :post
 
   has_one_attached :image
   has_many :likes, as: :likeable
-  has_many :likers, through: :likes, source: :user
+  has_many :favorites, as: :favoritable
+  has_many :comments, as: :commentable
+  has_many :flags, as: :flaggable
 
   validates :title, :body, :meal, :difficulty, :cuisine, presence: true
 
@@ -48,6 +49,18 @@ class Fork < ApplicationRecord
       likes_count: likes.count
     }
   end
+
+  def liked_by?(user)
+    likes.exists?(user: user)
+end
+
+def favorite_for(user)
+    favorites.find_by(user: user)
+  end
+
+def flagged?(user)
+    flags.exists?(user: user)
+end
 
   private
 

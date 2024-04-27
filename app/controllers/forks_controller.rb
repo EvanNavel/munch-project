@@ -8,6 +8,7 @@ class ForksController < ApplicationController
 
   def show
     @fork = Fork.find(params[:id])
+    @parent = @fork
   end
 
   def create

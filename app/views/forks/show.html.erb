@@ -1,14 +1,47 @@
-<h1><%= @fork.post.title %></h1>
+<div class="container mt-5">
+  <h1 class="mb-4"><%= @fork.title %></h1>
 
-<p>Forked by: <%= @fork.user.email %></p>
-
-<p>Meal: <%= @fork.post.meal %></p>
-<p>Difficulty: <%= @fork.post.difficulty %></p>
-<p>Cuisine: <%= @fork.post.cuisine %></p>
-<p>Description: <%= @fork.post.body %></p>
-
-<% if @fork.image.attached? %>
-  <div>
-    <%= image_tag @fork.image %>
+  <div class="sweets-counter mb-3">
+    <% if @fork.likes.count > 0 %>
+      <strong><%= pluralize(@fork.likes.count, 'Sweet') %></strong>
+    <% end %>
   </div>
-<% end %>
+  <% if @fork.liked_by?(current_user) %>
+    <%= button_to 'Unsweet', fork_like_path(@fork, @fork.likes.find_by(user: current_user)), method: :delete, class: 'btn btn-warning mb-3' %>
+  <% else %>
+    <%= button_to 'Sweet', fork_likes_path(@fork), method: :post, class: 'btn btn-success mb-3' %>
+  <% end %>
+
+  <ul class="list-group mb-3">
+    <li class="list-group-item">Forked by: <%= link_to @fork.user.email, user_profile_path(@fork.user) %></li>
+    <li class="list-group-item">Original Author: <%= link_to @fork.post.user.email, post_path(@fork.post) %></li>
+    <li class="list-group-item">Difficulty: <%= @fork.difficulty %></li>
+    <li class="list-group-item">Cuisine: <%= @fork.cuisine %></li>
+    <li class="list-group-item">Meal: <%= @fork.meal %></li>
+  </ul>
+
+  <% if @fork.image.attached? %>
+    <div>
+      <%= image_tag @fork.image %>
+    </div>
+  <% end %>
+
+  <h2 class="mb-3">Recipe</h2>
+  <p class="mb-3"><%= @fork.body %></p>
+
+  <% favorite = @fork.favorite_for(current_user) %>
+  <% if favorite %>
+    <%= button_to 'Remove from Cookbook', favorite_path(favorite), method: :delete, class: 'btn btn-warning mb-3' %>
+  <% else %>
+    <%= button_to 'Add to Cookbook', fork_favorites_path(@fork), method: :post, class: 'btn btn-success mb-3' %>
+  <% end %>
+
+  <% if current_user == @fork.user %>
+    <hr>
+    <%= link_to 'Edit this Fork', edit_fork_path(@fork), class: 'btn btn-primary mt-3' %>
+    <%= button_to 'Delete this Fork', fork_path(@fork), method: :delete, data: { turbo: false }, class: 'btn btn-danger mt-3', form: { class: 'd-inline' } %>
+  <% end %>
+
+  <hr>
+  <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
+</div>
