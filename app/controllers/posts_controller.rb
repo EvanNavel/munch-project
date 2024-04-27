@@ -80,4 +80,16 @@ class PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:title, :body, :meal, :difficulty, :cuisine, :image)
   end
+  def check_flag_threshold
+    if @post.flags.count >= 2
+      system_destroy
+    end
+  end
+
+  def system_destroy
+    @post.favorites.destroy_all
+    @post.forks.destroy_all
+    @post.destroy
+    flash[:success] = 'Post was deleted due to poor performance.'
+  end
 end
