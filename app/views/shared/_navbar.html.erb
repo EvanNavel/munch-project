@@ -13,7 +13,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <%= link_to 'Posts', posts_path, class: 'nav-link #{active_class(posts_path)}' %>
+          <%= link_to 'Recipes', posts_path, class: 'nav-link #{active_class(posts_path)}' %>
         </li>
         <% if user_signed_in? %>
           <li class="nav-item">
@@ -23,7 +23,7 @@
       </ul>
 
       <form class="d-flex" action="<%= posts_path %>" method="get" id="search-form">
-        <input class="form-control me-2" type="search" placeholder="Search Posts" aria-label="Search" name="search" value="<%= params[:search] %>">
+        <input class="form-control me-2" type="search" placeholder="Search Recipes" aria-label="Search" name="search" value="<%= params[:search] %>">
         <button class="btn btn-outline-light" type="submit">Search</button>
       </form>
 
