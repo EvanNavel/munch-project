@@ -48,6 +48,7 @@
     </div>
   <% end %>
   <%= render partial: 'comments/form', locals: { commentable: @post } %>
+
   <div class="flag-button-container mt-3">
   <% if current_user %>
     <% current_user_flag = @post.flags.find_by(user: current_user) %>
@@ -60,6 +61,7 @@
       <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
     <% end %>
   <% end %>
+
 </div>
   <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 </div>

@@ -2,16 +2,17 @@
 #
 # Table name: forks
 #
-#  id         :bigint           not null, primary key
-#  body       :text
-#  cuisine    :string
-#  difficulty :string
-#  meal       :string
-#  title      :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  post_id    :bigint           not null
-#  user_id    :bigint           not null
+#  id          :bigint           not null, primary key
+#  body        :text
+#  cuisine     :string
+#  difficulty  :string
+#  flags_count :integer          default(0)
+#  meal        :string
+#  title       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  post_id     :bigint           not null
+#  user_id     :bigint           not null
 #
 # Indexes
 #
@@ -28,14 +29,20 @@ class Fork < ApplicationRecord
   belongs_to :post
 
   has_one_attached :image
-  has_many :likes, as: :likeable
-  has_many :favorites, as: :favoritable
-  has_many :comments, as: :commentable
-  has_many :flags, as: :flaggable
 
-  validates :title, :body, :meal, :difficulty, :cuisine, presence: true
+  has_many :likes, as: :likeable, :dependent => :destroy
+  has_many :likers, through: :likes, source: :user
+
+  has_many :favorites, as: :favoritable, :dependent => :destroy
+  has_many :favoriters, through: :favorites, source: :user, :dependent => :destroy
+
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :flags, as: :flaggable, dependent: :destroy
+  has_many :forks
 
   validate :image_type, :image_size
+
+  validates :title, :body, :meal, :difficulty, :cuisine, presence: true
 
   def display_attributes
     {

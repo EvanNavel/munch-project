@@ -37,12 +37,12 @@ class FlagsController < ApplicationController
 
   def check_flag_threshold_and_destroy
     if @flaggable.flags.count >= 2
-      system_destroy
+      system_destroy(@flaggable)
     end
   end
 
-  def system_destroy
-    @flaggable.destroy
+  def system_destroy(flaggable)
+    flaggable.destroy
     flash[:success] = 'Item was deleted due to poor performance.'
   end
 end
