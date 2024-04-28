@@ -73,6 +73,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_045017) do
     t.index ["user_id"], name: "index_flags_on_user_id"
   end
 
+  create_table "follows", force: :cascade do |t|
+    t.bigint "follower_id"
+    t.bigint "followed_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "forks", force: :cascade do |t|
     t.bigint "post_id", null: false
     t.bigint "user_id", null: false
