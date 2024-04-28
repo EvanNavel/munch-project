@@ -42,6 +42,12 @@ class User < ApplicationRecord
 
   has_one :profile, :dependent => :destroy
 
+  has_many :following_associations, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
+  has_many :follower_associations, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
+
+  has_many :following, through: :following_associations, source: :followed
+  has_many :followers, through: :follower_associations, source: :follower
+
   after_create :create_user_profile
 
   private

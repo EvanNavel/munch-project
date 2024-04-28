@@ -1,40 +1,68 @@
-<div>
-  <h2>Profile</h2>
-  <p><strong>User:</strong> <%= @user.email %></p>
-  <p><strong>Name:</strong> <%= @profile.name %></p>
-  <p><strong>Bio:</strong> <%= @profile.bio %></p>
-</div>
+<div style="margin: 20px; font-family: Arial, sans-serif; display: flex;">
+  <div style="flex: 1; min-width: 300px;"> 
+    <h2>Profile</h2>
+    <p><strong>User:</strong> <%= @user.email %></p>
+    <p><strong>Name:</strong> <%= @profile.name %></p>
+    <p><strong>Bio:</strong> <%= @profile.bio %></p>
 
-<% if current_user == @user %>
-  <%= link_to "Edit Profile", edit_user_profile_path(@user) %>
-<% end %>
-<hr>
-
-  <h3>Recipes:</h3>
-  <br>
-  
-  <% @user.posts.each do |post| %>
-  <div>
-    <p><strong>Title:</strong> <%= post.title %></p>
-    <p><strong>Body:</strong> <%= post.body %></p>
-    <p><strong>Cuisine:</strong> <%= post.cuisine %></p>
-    <p><strong>Difficulty:</strong> <%= post.difficulty %></p>
-    <p><strong>Meal:</strong> <%= post.meal %></p>
-    
-    <div class="post-interactions">
-      <div class="post-likes">
-        <h4>LIKES</h4>
-        <p><strong><%= post.likes.count %> Sweets</strong></p>
-        
-      
-      <div class="post-comments">
-        <h4>COMMENTS</h4>
-        <% post.comments.each do |comment| %>
-          <p><strong><%= comment.user.email %>:</strong> <%= comment.body %></p>
-          
+    <div style="margin-top: 20px;">
+      <% unless current_user == @user %>
+        <% if current_user.following.include?(@user) %>
+          <%= button_to "Unfollow", user_follow_path(@user, current_user.following_associations.find_by(followed_id: @user.id)), method: :delete, class: "btn btn-danger" %>
+        <% else %>
+          <%= button_to "Follow", user_follows_path(@user), params: { followed_id: @user.id }, method: :post, class: "btn btn-primary" %>
         <% end %>
-      </div>
+      <% end %>
+    </div>
+
+    <% if current_user == @user %>
+      <%= link_to "Edit Profile", edit_user_profile_path(@user), class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+
+  <div style="flex: 1; padding-left: 20px;"> <
+    <div style="margin-bottom: 20px;">
+      <h4 style="font-size: smaller;">Followers:</h4>
+      <% @user.followers.each do |follower| %>
+        <p style="font-size: smaller;"><%= link_to follower.email, user_profile_path(follower), class: "btn btn-link" %></p>
+      <% end %>
+    </div>
+
+    <div>
+      <h4 style="font-size: smaller;">Following:</h4>
+      <% @user.following.each do |followed| %>
+        <p style="font-size: smaller;"><%= link_to followed.email, user_profile_path(followed), class: "btn btn-link" %></p>
+      <% end %>
     </div>
   </div>
-  <hr>
-<% end %>
+</div>
+
+<hr>
+
+<div style="margin: 20px;">
+  <h3>Recipes:</h3>
+  <% @user.posts.each do |post| %>
+    <div style="margin-top: 20px;">
+      <p><strong>Title:</strong> <%= post.title %></p>
+      <p><strong>Body:</strong> <%= post.body %></p>
+      <p><strong>Cuisine:</strong> <%= post.cuisine %></p>
+      <p><strong>Difficulty:</strong> <%= post.difficulty %></p>
+      <p><strong>Meal:</strong> <%= post.meal %></p>
+
+      <div class="post-interactions" style="margin-top: 10px;">
+        <div class="post-likes">
+          <h4>Likes</h4>
+          <p><strong><%= post.likes.count %> Sweets</strong></p>
+        </div>
+
+        <div class="post-comments" style="margin-top: 10px;">
+          <h4>Comments</h4>
+          <% post.comments.each do |comment| %>
+            <p><strong><%= comment.user.email %>:</strong> <%= comment.body %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <hr>
+  <% end %>
+</div>
