@@ -1,32 +1,34 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: [:create, :destroy]
+  before_action :set_likeable
 
   def create
-    @like = @post.likes.new(user: current_user)
+    @like = current_user.likes.new(likeable: @likeable)
 
     if @like.save
-      redirect_to @post, notice: 'You liked this post.'
+      redirect_back fallback_location: [@likeable], notice: 'You sweeted this post!'
     else
-      redirect_to @post, alert: 'Unable to like this post.'
+      redirect_back fallback_location: [@likeable], alert: 'Unable to sweet this.'
     end
   end
 
   def destroy
-    @like = @post.likes.find_by(user: current_user)
+    @like = @likeable.likes.find_by(user: current_user)
     if @like&.destroy
-      redirect_to @post, notice: 'You unliked this post.'
+      redirect_back fallback_location: [@likeable], notice: 'You unsweeted this post.'
     else
-      redirect_to @post, alert: 'Unable to unlike this post.'
+      redirect_back fallback_location: [@likeable], alert: 'Unable to unsweet this.'
     end
   end
 
   private
 
-  def set_post
-    @post = Post.find_by(id: params[:post_id])
-    unless @post
-      redirect_to posts_path, alert: 'Post not found.'
+  def set_likeable
+    klass = [Post, Fork].find do |c|
+      params["#{c.name.underscore}_id"].present?
     end
+    @likeable = klass.find(params["#{klass.name.underscore}_id"])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: "#{klass.name} not found."
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_26_053825) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_28_045017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,28 +45,31 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_053825) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.string "commentable_type"
+    t.bigint "commentable_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "favorites", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_favorites_on_post_id"
+    t.string "favoritable_type"
+    t.bigint "favoritable_id"
+    t.index ["favoritable_type", "favoritable_id"], name: "index_favorites_on_favoritable"
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "flags", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_flags_on_post_id"
+    t.string "flaggable_type"
+    t.bigint "flaggable_id"
+    t.index ["flaggable_type", "flaggable_id"], name: "index_flags_on_flaggable"
     t.index ["user_id"], name: "index_flags_on_user_id"
   end
 
@@ -82,16 +85,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_053825) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
+    t.text "body"
+    t.string "meal"
+    t.string "difficulty"
+    t.string "cuisine"
+    t.integer "flags_count", default: 0
     t.index ["post_id"], name: "index_forks_on_post_id"
     t.index ["user_id"], name: "index_forks_on_user_id"
   end
 
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_likes_on_post_id"
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -142,15 +152,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_053825) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
-  add_foreign_key "favorites", "posts"
   add_foreign_key "favorites", "users"
-  add_foreign_key "flags", "posts"
   add_foreign_key "flags", "users"
   add_foreign_key "forks", "posts"
   add_foreign_key "forks", "users"
-  add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "users"
