@@ -8,7 +8,7 @@ class ForksController < ApplicationController
   end
 
   def show
-    @fork = Fork.find(params[:id])
+    @fork = Fork.includes(:tags).find(params[:id])
     @parent = @fork
     @commentable = @fork
     @comment = Comment.new
@@ -19,8 +19,7 @@ class ForksController < ApplicationController
     @post = Post.find(params[:post_id])
     @fork = current_user.forks.build(fork_params)
     @fork.post = @post
-    handle_tags(@fork, params[:tags])
-
+    handle_tags(@fork, tag_params)
     if @fork.save
       redirect_to post_fork_path(@post, @fork), notice: 'Recipe forked successfully.'
     else
@@ -32,7 +31,7 @@ class ForksController < ApplicationController
   end
 
   def update
-    handle_tags(@fork, params[:tags])
+    handle_tags(@fork, tag_params)
     if @fork.update(fork_params)
       redirect_to [@fork.post, @fork], notice: 'Fork was successfully updated.'
     else
@@ -48,14 +47,33 @@ class ForksController < ApplicationController
   private
 
   def set_fork
-    @fork = Fork.find(params[:id])
+    @fork = Fork.includes(:tags).find(params[:id])
   end
 
   def fork_params
     params.require(:fork).permit(:title, :body, :image)
   end
 
+  def tag_params
+    params.require(:fork).permit(:meal_tags, :difficulty_tags, :cuisine_tags, :dietary_tags)
+  end
+
   def handle_tags(fork, tag_params)
-    fork.tags = tag_params.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
+    %w[meal difficulty cuisine dietary].each do |category|
+      tag_names = (tag_params["#{category}_tags"] || '').split(',').map(&:strip).uniq
+      current_tags = fork.tags.where(category: category).pluck(:name)
+
+      # Remove old tags
+      (current_tags - tag_names).each do |old_name|
+        old_tag = Tag.find_by(name: old_name, category: category)
+        fork.tags.delete(old_tag) if old_tag
+      end
+
+      # Add new tags
+      (tag_names - current_tags).each do |new_name|
+        new_tag = Tag.find_or_create_by(name: new_name, category: category)
+        fork.tags << new_tag unless fork.tags.include?(new_tag)
+      end
+    end
   end
 end

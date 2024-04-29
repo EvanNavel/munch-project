@@ -25,27 +25,25 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Fork < ApplicationRecord
+  include Taggable
+
   belongs_to :user
   belongs_to :post
 
   has_one_attached :image
 
-  has_many :likes, as: :likeable, :dependent => :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
   has_many :likers, through: :likes, source: :user
 
-  has_many :taggings, as: :taggable, :dependent => :destroy
-  has_many :tags, through: :taggings, :dependent => :destroy
-
-  has_many :favorites, as: :favoritable, :dependent => :destroy
-  has_many :favoriters, through: :favorites, source: :user, :dependent => :destroy
+  has_many :favorites, as: :favoritable, dependent: :destroy
+  has_many :favoriters, through: :favorites, source: :user
 
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :flags, as: :flaggable, dependent: :destroy
-  has_many :forks
+
+  validates :title, :body, presence: true
 
   validate :image_type, :image_size
-
-  validates :title, :body, :meal, :difficulty, :cuisine, presence: true
 
   def display_attributes
     {
@@ -62,15 +60,15 @@ class Fork < ApplicationRecord
 
   def liked_by?(user)
     likes.exists?(user: user)
-end
+  end
 
-def favorite_for(user)
+  def favorite_for(user)
     favorites.find_by(user: user)
   end
 
-def flagged?(user)
+  def flagged?(user)
     flags.exists?(user: user)
-end
+  end
 
   private
 

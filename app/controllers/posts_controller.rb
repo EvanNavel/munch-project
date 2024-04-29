@@ -31,7 +31,7 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-    handle_tags(@post, params[:tags])
+    handle_tags(@post, tag_params)
     if @post.save
       flash[:success] = 'Blog post was successfully created.'
       redirect_to post_path(@post)
@@ -48,7 +48,7 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
-    handle_tags(@post, params[:tags])
+    handle_tags(@post, tag_params)
     if @post.update(post_params)
       flash[:success] = 'Post was successfully updated.'
       redirect_to post_path(@post)
@@ -60,7 +60,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-    @post.destroy_with_associations
+    @post.destroy
     flash[:success] = 'Post was successfully deleted.'
     redirect_to posts_url
   end
@@ -81,7 +81,24 @@ class PostsController < ApplicationController
     params.require(:post).permit(:title, :body, :image)
   end
 
+  def tag_params
+    params.permit(:meal_tags, :difficulty_tags, :cuisine_tags, :dietary_tags)
+  end
+
+  # parse comma separated tags and associate them with the post
   def handle_tags(post, tag_params)
-    post.tags = tag_params.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
+    %w[meal difficulty cuisine dietary].each do |category|
+      tag_names = tag_params["#{category}_tags"].to_s.split(',').map(&:strip)
+
+      tag_names.each do |tag_name|
+        tag = Tag.find_or_create_by(name: tag_name, category: category)
+        post.tags << tag unless post.tags.include?(tag)
+      end
+
+      # Clean up tags that are no longer associated
+      post.tags.where(category: category).each do |tag|
+        post.tags.delete(tag) unless tag_names.include?(tag.name)
+      end
+    end
   end
 end

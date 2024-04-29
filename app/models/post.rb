@@ -22,6 +22,8 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Post < ApplicationRecord
+    include Taggable
+
     belongs_to :user, class_name: 'User', foreign_key: 'user_id', inverse_of: :posts
 
     validates :title, presence: true
@@ -81,6 +83,10 @@ class Post < ApplicationRecord
 
     def forked_by?(user)
         forks.exists?(user: user)
+    end
+
+    def tags_for(category)
+        tags.where(category: category).pluck(:name).join(', ')
     end
 
     private

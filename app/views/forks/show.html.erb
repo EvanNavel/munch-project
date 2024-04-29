@@ -15,9 +15,10 @@
   <ul class="list-group mb-3">
     <li class="list-group-item">Forked by: <%= link_to @fork.user.email, user_profile_path(@fork.user) %></li>
     <li class="list-group-item">Original Author: <%= link_to @fork.post.user.email, post_path(@fork.post) %></li>
-    <li class="list-group-item">Difficulty: <%= @fork.difficulty %></li>
-    <li class="list-group-item">Cuisine: <%= @fork.cuisine %></li>
-    <li class="list-group-item">Meal: <%= @fork.meal %></li>
+    <li class="list-group-item">Difficulty: <%= @fork.tag_list('difficulty') %></li>
+    <li class="list-group-item">Cuisine: <%= @fork.tag_list('cuisine') %></li>
+    <li class="list-group-item">Meal: <%= @fork.tag_list('meal') %></li>
+    <li class="list-group-item">Dietary: <%= @fork.tag_list('dietary') %></li>
   </ul>
 
   <% if @fork.image.attached? %>
@@ -43,31 +44,31 @@
   <% end %>
 
   <hr>
-<h2 class="mb-3">Comments</h2>
-<% @fork.comments.each do |comment| %>
-  <div class="comment-box mb-3">
-    <p><%= comment.user.email %></p>
-    <p><%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
-    <p><strong>Comment:</strong> <%= comment.body %></p>
-    <% if current_user && comment.user == current_user %>
-      <%= button_to 'Delete', fork_comment_path(@fork, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+  <h2 class="mb-3">Comments</h2>
+  <% @fork.comments.each do |comment| %>
+    <div class="comment-box mb-3">
+      <p><%= comment.user.email %></p>
+      <p><%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+      <p><strong>Comment:</strong> <%= comment.body %></p>
+      <% if current_user && comment.user == current_user %>
+        <%= button_to 'Delete', fork_comment_path(@fork, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= render partial: 'comments/form', locals: { commentable: @fork } %>
+
+  <div class="flag-button-container mt-3">
+    <% if current_user %>
+      <% current_user_flag = @fork.flags.find_by(user: current_user) %>
+      <% if current_user_flag %>
+        <%= button_to 'Unflag', fork_flag_path(@fork, current_user_flag), method: :delete, class: 'btn btn-danger' %>
+      <% else %>
+        <%= button_to 'Flag this Recipe', fork_flags_path(@fork), method: :post, class: 'btn btn-warning' %>
+      <% end %>
+      <% if @fork.flags.count > 0 %>
+        <span class="flag-count ml-2"><%= pluralize(@fork.flags.count, 'flag') %></span>
+      <% end %>
     <% end %>
   </div>
-<% end %>
-<%= render partial: 'comments/form', locals: { commentable: @fork } %>
-
-<div class="flag-button-container mt-3">
-<% if current_user %>
-  <% current_user_flag = @fork.flags.find_by(user: current_user) %>
-  <% if current_user_flag %>
-    <%= button_to 'Unflag', fork_flag_path(@fork, current_user_flag), method: :delete, class: 'btn btn-danger' %>
-  <% else %>
-    <%= button_to 'Flag this Recipe', fork_flags_path(@fork), method: :post, class: 'btn btn-warning' %>
-  <% end %>
-  <% if @fork.flags.count > 0 %>
-    <span class="flag-count ml-2"><%= pluralize(@fork.flags.count, 'flag') %></span>
-  <% end %>
-<% end %>
-</div>
   <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
 </div>

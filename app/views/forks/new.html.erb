@@ -12,18 +12,25 @@
   </div>
 
   <div>
-    <%= form.label :meal %>
-    <%= form.text_field :meal, value: @post.meal %>
+    <%= form.label :meal, "Type of Meal" %>
+    <%= form.hidden_field :meal_tags, value: @fork.tag_list('meal') %>
+    <%= select_tag :meal, options_for_select(['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'], selected: @fork.tag_list('meal')), include_blank: true, class: 'form-control', onchange: "this.form['fork[meal_tags]'].value = this.value" %>
   </div>
 
   <div>
-    <%= form.label :difficulty %>
-    <%= form.text_field :difficulty, value: @post.difficulty %>
+    <%= form.label :difficulty, "Difficulty" %>
+    <%= form.hidden_field :difficulty_tags, value: @fork.tag_list('difficulty') %>
+    <%= select_tag :difficulty, options_for_select(['Easy', 'Medium', 'Hard', 'Expert'], selected: @fork.tag_list('difficulty')), include_blank: true, class: 'form-control', onchange: "this.form['fork[difficulty_tags]'].value = this.value" %>
   </div>
 
   <div>
-    <%= form.label :cuisine %>
-    <%= form.text_field :cuisine, value: @post.cuisine %>
+    <%= form.label :cuisine, "Cuisine" %>
+    <%= form.text_field :cuisine_tags, value: @fork.tag_list('cuisine'), placeholder: 'e.g. American, Italian (separate with commas)' %>
+  </div>
+
+  <div>
+    <%= form.label :dietary, "Dietary Restrictions" %>
+    <%= form.text_field :dietary_tags, value: @fork.tag_list('dietary'), placeholder: 'e.g. Gluten Free, Vegan (separate with commas)' %>
   </div>
 
   <div>
