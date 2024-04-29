@@ -31,6 +31,7 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
+    handle_tags(@post, params[:tags])
     if @post.save
       flash[:success] = 'Blog post was successfully created.'
       redirect_to post_path(@post)
@@ -47,6 +48,7 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
+    handle_tags(@post, params[:tags])
     if @post.update(post_params)
       flash[:success] = 'Post was successfully updated.'
       redirect_to post_path(@post)
@@ -58,9 +60,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-    @post.favorites.each(&:destroy)
-    @post.forks.each(&:destroy)
-    @post.destroy
+    @post.destroy_with_associations
     flash[:success] = 'Post was successfully deleted.'
     redirect_to posts_url
   end
@@ -78,18 +78,10 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :body, :meal, :difficulty, :cuisine, :image)
-  end
-  def check_flag_threshold
-    if @post.flags.count >= 2
-      system_destroy
-    end
+    params.require(:post).permit(:title, :body, :image)
   end
 
-  def system_destroy
-    @post.favorites.destroy_all
-    @post.forks.destroy_all
-    @post.destroy
-    flash[:success] = 'Post was deleted due to poor performance.'
+  def handle_tags(post, tag_params)
+    post.tags = tag_params.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
   end
 end

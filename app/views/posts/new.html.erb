@@ -4,9 +4,27 @@
 
   <%= f.text_field :title %>
   <%= f.text_area :body %>
-  <%= f.text_field :meal %>
-  <%= f.text_field :difficulty %>
-  <%= f.text_field :cuisine %>
+
+  <div>
+    <%= f.label :meal_tags, "Meal Tags" %><br>
+    <%= f.collection_select :meal_tags, Tag.where(category: 'meal'), :name, :name, {}, { multiple: true } %>
+  </div>
+
+  <div>
+    <%= f.label :difficulty_tags, "Difficulty Tags" %><br>
+    <%= f.collection_select :difficulty_tags, Tag.where(category: 'difficulty'), :name, :name, {}, { multiple: true } %>
+  </div>
+
+  <div>
+    <%= f.label :cuisine_tags, "Cuisine Tags" %><br>
+    <%= f.collection_select :cuisine_tags, Tag.where(category: 'cuisine'), :name, :name, {}, { multiple: true } %>
+  </div>
+
+  <div>
+    <%= f.label :dietary_tags, "Dietary Restrictions" %><br>
+    <%= f.collection_select :dietary_tags, Tag.where(category: 'dietary'), :name, :name, {}, { multiple: true } %>
+  </div>
+
   <div>
     <%= f.label :image, "Upload Image" %>
     <%= f.file_field :image, accept: "image/jpeg,image/png" %>

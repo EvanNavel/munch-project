@@ -17,8 +17,9 @@ class ForksController < ApplicationController
 
   def create
     @post = Post.find(params[:post_id])
-    @fork = current_user.forks.new(fork_params)
+    @fork = current_user.forks.build(fork_params)
     @fork.post = @post
+    handle_tags(@fork, params[:tags])
 
     if @fork.save
       redirect_to post_fork_path(@post, @fork), notice: 'Recipe forked successfully.'
@@ -31,6 +32,7 @@ class ForksController < ApplicationController
   end
 
   def update
+    handle_tags(@fork, params[:tags])
     if @fork.update(fork_params)
       redirect_to [@fork.post, @fork], notice: 'Fork was successfully updated.'
     else
@@ -50,6 +52,10 @@ class ForksController < ApplicationController
   end
 
   def fork_params
-    params.require(:fork).permit(:title, :body, :meal, :difficulty, :cuisine, :image)
+    params.require(:fork).permit(:title, :body, :image)
+  end
+
+  def handle_tags(fork, tag_params)
+    fork.tags = tag_params.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
   end
 end
