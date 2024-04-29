@@ -22,6 +22,10 @@ class ProfilesController < ApplicationController
         render :edit
       end
     end
+
+    def cookbook
+      @favorites = current_user.favorites.includes(favoritable: :post)
+    end
   
     private
   
