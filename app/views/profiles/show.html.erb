@@ -20,19 +20,23 @@
   </div>
 
   <div style="flex: 1; padding-left: 20px;"> 
-    <div style="margin-bottom: 20px;">
-      <h4 style="font-size: smaller;">Followers:</h4>
-      <% @user.followers.each do |follower| %>
-        <p style="font-size: smaller;"><%= link_to follower.email, user_profile_path(follower), class: "btn btn-link" %></p>
-      <% end %>
-    </div>
+    <% if @user.followers.any? %>
+      <div style="margin-bottom: 20px;">
+        <h4 style="font-size: smaller;">Followers:</h4>
+        <% @user.followers.each do |follower| %>
+          <p style="font-size: smaller;"><%= link_to follower.email, user_profile_path(follower), class: "btn btn-link" %></p>
+        <% end %>
+      </div>
+    <% end %>
 
-    <div>
-      <h4 style="font-size: smaller;">Following:</h4>
-      <% @user.following.each do |followed| %>
-        <p style="font-size: smaller;"><%= link_to followed.email, user_profile_path(followed), class: "btn btn-link" %></p>
-      <% end %>
-    </div>
+    <% if @user.following.any? %>
+      <div>
+        <h4 style="font-size: smaller;">Following:</h4>
+        <% @user.following.each do |followed| %>
+          <p style="font-size: smaller;"><%= link_to followed.email, user_profile_path(followed), class: "btn btn-link" %></p>
+        <% end %>
+      </div>
+    <% end %>
 
     <% if current_user == @user %>
       <!-- Link to Cookbook -->
