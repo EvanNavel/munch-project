@@ -19,6 +19,9 @@
           <li class="nav-item">
             <%= link_to "My Profile", user_profile_path(current_user), class: "nav-link #{active_class(user_profile_path(current_user))}" %>
           </li>
+          <li class="nav-item">
+            <%= link_to "My Cookbook", user_cookbook_path(current_user), class: "nav-link #{active_class(user_cookbook_path(current_user))}" %>
+          </li>
         <% end %>
       </ul>
 
