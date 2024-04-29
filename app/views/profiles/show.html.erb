@@ -1,7 +1,6 @@
 <div style="margin: 20px; font-family: Arial, sans-serif; display: flex;">
   <div style="flex: 1; min-width: 300px;"> 
-    <h2>Profile</h2>
-    <p><strong>User:</strong> <%= @user.email %></p>
+    <h2><%=@user.email%></h2>
     <p><strong>Name:</strong> <%= @profile.name %></p>
     <p><strong>Bio:</strong> <%= @profile.bio %></p>
 
@@ -20,20 +19,31 @@
     <% end %>
   </div>
 
-  <div style="flex: 1; padding-left: 20px;"> <
-    <div style="margin-bottom: 20px;">
-      <h4 style="font-size: smaller;">Followers:</h4>
-      <% @user.followers.each do |follower| %>
-        <p style="font-size: smaller;"><%= link_to follower.email, user_profile_path(follower), class: "btn btn-link" %></p>
-      <% end %>
-    </div>
+  <div style="flex: 1; padding-left: 20px;"> 
+    <% if @user.followers.any? %>
+      <div style="margin-bottom: 20px;">
+        <h4 style="font-size: smaller;">Followers:</h4>
+        <% @user.followers.each do |follower| %>
+          <p style="font-size: smaller;"><%= link_to follower.email, user_profile_path(follower), class: "btn btn-link" %></p>
+        <% end %>
+      </div>
+    <% end %>
 
-    <div>
-      <h4 style="font-size: smaller;">Following:</h4>
-      <% @user.following.each do |followed| %>
-        <p style="font-size: smaller;"><%= link_to followed.email, user_profile_path(followed), class: "btn btn-link" %></p>
-      <% end %>
-    </div>
+    <% if @user.following.any? %>
+      <div>
+        <h4 style="font-size: smaller;">Following:</h4>
+        <% @user.following.each do |followed| %>
+          <p style="font-size: smaller;"><%= link_to followed.email, user_profile_path(followed), class: "btn btn-link" %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if current_user == @user %>
+      <!-- Link to Cookbook -->
+      <div style="margin-top: 20px;">
+        <%= link_to 'Cookbook', user_cookbook_path(@user), class: 'btn btn-primary' %>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -42,19 +52,16 @@
 <div style="margin: 20px;">
   <h3>Recipes:</h3>
   <% @user.posts.each do |post| %>
-    <div style="margin-top: 20px;">
-      <p><strong>Title:</strong> <%= post.title %></p>
-      <p><strong>Body:</strong> <%= post.body %></p>
-      <p><strong>Cuisine:</strong> <%= post.cuisine %></p>
-      <p><strong>Difficulty:</strong> <%= post.difficulty %></p>
-      <p><strong>Meal:</strong> <%= post.meal %></p>
-
-      <div class="post-interactions" style="margin-top: 10px;">
-        <div class="post-likes">
-          <h4>Likes</h4>
-          <p><strong><%= post.likes.count %> Sweets</strong></p>
-        </div>
-
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title"><%= link_to post.title, post_path(post) %></h2>
+        <p class="card-text">
+          <strong>Body:</strong> <%= post.body %><br>
+          <strong>Cuisine:</strong> <%= post.cuisine %><br>
+          <strong>Difficulty:</strong> <%= post.difficulty %><br>
+          <strong>Meal:</strong> <%= post.meal %><br>
+          <strong>Likes:</strong> <%= pluralize(post.likes.count, 'Sweet') %>
+        </p>
         <div class="post-comments" style="margin-top: 10px;">
           <h4>Comments</h4>
           <% post.comments.each do |comment| %>

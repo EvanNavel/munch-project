@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show] do
     resource :profile, only: [:show, :edit, :update]
     resources :follows, only: [:create, :destroy]
+    get 'cookbook', to: 'profiles#cookbook', as: 'cookbook'
 
   end
 end
