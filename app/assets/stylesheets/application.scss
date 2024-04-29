@@ -28,7 +28,8 @@ $color-background-light: #f8f9fa;
 $color-success: #28a745;
 $color-warning: #ffc107;
 $color-danger: #dc3545;
-$color-primary: #007bff;
+$color-primary: DarkOrange; /* Changed to DarkOrange */
+$color-primary-hover: #ff8c00; /* New variable for hover state */
 $color-secondary: #6c757d;
 
 /* Reusable mixins */
@@ -39,6 +40,13 @@ $color-secondary: #6c757d;
 @mixin btn-color($color) {
   background-color: $color;
   border-color: $color;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: darken($color, 10%);
+    border-color: darken($color, 10%);
+  }
 }
 
 /* Base styles */
@@ -60,6 +68,16 @@ main {
   border-radius: 50%;
   overflow: hidden;
   margin-top: -6px;
+}
+
+a {
+  color: $color-primary;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: $color-primary-hover;
+  }
 }
 
 /* Blog styles */
@@ -214,4 +232,19 @@ h1 {
 .btn-outline-secondary {
   color: $color-secondary;
   border-color: $color-secondary;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: $color-primary;
+    border-color: $color-primary;
+  }
+}
+
+.bg-orange {
+  background-color: DarkOrange !important;
+}
+
+.text-right {
+  text-align: right;
 }

@@ -1,6 +1,8 @@
 <div style="margin: 20px; font-family: Arial, sans-serif; display: flex;">
   <div style="flex: 1; min-width: 300px;"> 
-    <h2><%= @user.email %></h2>
+
+
+    <h2><%=@user.email%></h2>
     <p><strong>Name:</strong> <%= @profile.name %></p>
     <p><strong>Bio:</strong> <%= @profile.bio %></p>
 
@@ -72,6 +74,7 @@
           <strong>Difficulty:</strong> <%= post.difficulty %><br>
           <strong>Meal:</strong> <%= post.meal %><br>
           <strong>Likes:</strong> <%= pluralize(post.likes.count, 'Like') %>
+
         </p>
         <div class="post-comments" style="margin-top: 10px;">
           <h4>Comments:</h4>

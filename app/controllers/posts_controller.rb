@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     if params[:sort_by] == 'date'
       @items.sort_by!(&:created_at).reverse!
     elsif params[:sort_by] == 'likes'
-      @items.sort_by { |item| item.respond_to?(:likes) ? item.likes.size : 0 }.reverse
+      @items.sort_by! { |item| item.respond_to?(:likes) ? item.likes.size : 0 }.reverse!
     end
 
     render :index
