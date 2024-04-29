@@ -82,22 +82,24 @@ class PostsController < ApplicationController
   end
 
   def tag_params
-    params.permit(:meal_tags, :difficulty_tags, :cuisine_tags, :dietary_tags)
+    params.require(:post).permit(:meal_tags, :difficulty_tags, :cuisine_tags, :dietary_tags)
   end
 
-  # parse comma separated tags and associate them with the post
   def handle_tags(post, tag_params)
     %w[meal difficulty cuisine dietary].each do |category|
-      tag_names = tag_params["#{category}_tags"].to_s.split(',').map(&:strip)
+      tag_names = tag_params["#{category}_tags"].to_s.split(',').map(&:strip).uniq
+      current_tags = post.tags.where(category: category).pluck(:name)
 
-      tag_names.each do |tag_name|
-        tag = Tag.find_or_create_by(name: tag_name, category: category)
-        post.tags << tag unless post.tags.include?(tag)
+      # Remove old tags
+      (current_tags - tag_names).each do |old_name|
+        old_tag = Tag.find_by(name: old_name, category: category)
+        post.tags.delete(old_tag) if old_tag
       end
 
-      # Clean up tags that are no longer associated
-      post.tags.where(category: category).each do |tag|
-        post.tags.delete(tag) unless tag_names.include?(tag.name)
+      # Add new tags
+      (tag_names - current_tags).each do |new_name|
+        new_tag = Tag.find_or_create_by(name: new_name, category: category)
+        post.tags << new_tag unless post.tags.include?(new_tag)
       end
     end
   end
