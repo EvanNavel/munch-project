@@ -2,8 +2,14 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    posts = Post.where("title ILIKE :search OR body ILIKE :search OR meal ILIKE :search OR difficulty ILIKE :search OR cuisine ILIKE :search", search: "%#{params[:search]}%").includes(:likes, :user)
-    forks = Fork.all.includes(:user)
+    if params[:search].present?
+      tag = Tag.where('name ILIKE ?', "%#{params[:search]}%").first
+      posts = tag ? Post.joins(:tags).where(tags: { id: tag.id }) : Post.none
+      forks = tag ? Fork.joins(:tags).where(tags: { id: tag.id }) : Fork.none
+    else
+      posts = Post.all.includes(:likes, :user)
+      forks = Fork.all.includes(:user)
+    end
 
     @items = (posts + forks).sort_by(&:created_at).reverse
 

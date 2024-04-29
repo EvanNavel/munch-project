@@ -23,10 +23,13 @@
           <div class="col-md-8">
             <h2 class="card-title"><%= link_to item.title, item.is_a?(Post) ? post_path(item) : post_fork_path(item.post, item) %></h2>
             <p class="card-text">
-              <strong>Difficulty:</strong> <%= item.tag_list('difficulty') %><br>
-              <strong>Type Of Meal:</strong> <%= item.tag_list('meal') %><br>
-              <strong>Cuisine:</strong> <%= item.tag_list('cuisine') %><br>
-              <strong>Dietary Restrictions:</strong> <%= item.tag_list('dietary') %><br>
+              <% ['difficulty', 'meal', 'cuisine', 'dietary'].each do |category| %>
+                <strong><%= category.titleize %>:</strong>
+                <% item.tag_list(category).split(', ').each do |tag| %>
+                  <%= link_to tag, posts_path(search: tag), class: 'tag-badge' %>
+                <% end %>
+                <br>
+              <% end %>
               <strong>User:</strong> <%= item.user.email %><br>
               <strong>Date:</strong> <%= item.created_at.strftime("%B %d, %Y") %><br>
               <strong>Sweets:</strong> <%= pluralize(item.likes.count, 'Sweet') %>
