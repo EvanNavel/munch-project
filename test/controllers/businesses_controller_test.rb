@@ -26,3 +26,4 @@ class BusinessesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 end
+

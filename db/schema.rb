@@ -174,3 +174,4 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_031648) do
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "users"
 end
+

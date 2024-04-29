@@ -27,3 +27,4 @@ class BusinessTest < ActiveSupport::TestCase
   #   assert true
   # end
 end
+

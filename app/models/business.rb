@@ -28,3 +28,4 @@ class Business < ApplicationRecord
   validates :restaurant_type, presence: true
   validates :bio, length: { minimum: 10 }
 end
+

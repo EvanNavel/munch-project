@@ -59,3 +59,4 @@ class BusinessesController < ApplicationController
     params.require(:business).permit(:name, :address, :restaurant_type, :bio, :menu)
   end
 end
+
