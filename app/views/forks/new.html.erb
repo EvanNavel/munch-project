@@ -1,4 +1,39 @@
 <h1>New Fork</h1>
 
-<%= render 'form', fork: @fork %>
-<%= link_to 'Back', posts_path %>
+<%= form_with(model: [ @post, @fork ], local: true, data: { turbo: false }) do |form| %>
+  <div>
+    <%= form.label :title %>
+    <%= form.text_field :title, value: @post.title %>
+  </div>
+
+  <div>
+    <%= form.label :body %>
+    <%= form.text_area :body, value: @post.body %>
+  </div>
+
+  <div>
+    <%= form.label :meal %>
+    <%= form.text_field :meal, value: @post.meal %>
+  </div>
+
+  <div>
+    <%= form.label :difficulty %>
+    <%= form.text_field :difficulty, value: @post.difficulty %>
+  </div>
+
+  <div>
+    <%= form.label :cuisine %>
+    <%= form.text_field :cuisine, value: @post.cuisine %>
+  </div>
+
+  <div>
+    <%= form.label :image, "Upload Image" %>
+    <%= form.file_field :image, accept: "image/jpeg,image/png" %>
+  </div>
+
+  <div>
+    <%= form.submit "Create Fork", class: "btn btn-primary" %>
+  </div>
+
+  <%= link_to 'Back', post_path(@post) %>
+<% end %>

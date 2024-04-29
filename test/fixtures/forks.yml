@@ -2,11 +2,17 @@
 #
 # Table name: forks
 #
-#  id         :bigint           not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  post_id    :bigint           not null
-#  user_id    :bigint           not null
+#  id          :bigint           not null, primary key
+#  body        :text
+#  cuisine     :string
+#  difficulty  :string
+#  flags_count :integer          default(0)
+#  meal        :string
+#  title       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  post_id     :bigint           not null
+#  user_id     :bigint           not null
 #
 # Indexes
 #
