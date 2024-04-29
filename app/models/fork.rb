@@ -33,6 +33,9 @@ class Fork < ApplicationRecord
   has_many :likes, as: :likeable, :dependent => :destroy
   has_many :likers, through: :likes, source: :user
 
+  has_many :taggings, as: :taggable, :dependent => :destroy
+  has_many :tags, through: :taggings, :dependent => :destroy
+
   has_many :favorites, as: :favoritable, :dependent => :destroy
   has_many :favoriters, through: :favorites, source: :user, :dependent => :destroy
 
