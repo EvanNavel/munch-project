@@ -50,6 +50,8 @@ class User < ApplicationRecord
 
   after_create :create_user_profile
 
+  has_one :business, dependent: :destroy
+
   private
 
 

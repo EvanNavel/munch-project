@@ -1,0 +1,35 @@
+<div style="margin: 20px; font-family: Arial, sans-serif;">
+  <% if @business && @business.user == current_user %>
+    <h2><%= @business.name %></h2>
+    <% if @business.address.present? %>
+      <p><strong>Address:</strong> <%= @business.address %></p>
+    <% end %>
+    <% if @business.restaurant_type.present? %>
+      <p><strong>Type:</strong> <%= @business.restaurant_type %></p>
+    <% end %>
+    <% if @business.bio.present? %>
+      <p><strong>Bio:</strong> <%= @business.bio %></p>
+    <% end %>
+    <% if @business.menu.present? %>
+      <p><strong>Menu:</strong> <%= @business.menu %></p>
+    <% end %>
+    <%= link_to 'Edit', edit_user_business_path(@user, @business), class: 'btn btn-primary' %>
+    <%= button_to 'Delete', user_business_path(@user, @business), method: :delete, data: { confirm: 'Are you sure you want to delete your business page?' }, class: 'btn btn-danger' %>
+  <% elsif @business %>
+    <h2><%= @business.name %></h2>
+    <% if @business.address.present? %>
+      <p><strong>Address:</strong> <%= @business.address %></p>
+    <% end %>
+    <% if @business.restaurant_type.present? %>
+      <p><strong>Type:</strong> <%= @business.restaurant_type %></p>
+    <% end %>
+    <% if @business.bio.present? %>
+      <p><strong>Bio:</strong> <%= @business.bio %></p>
+    <% end %>
+    <% if @business.menu.present? %>
+      <p><strong>Menu:</strong> <%= @business.menu %></p>
+    <% end %>
+  <% else %>
+    <p>No business found.</p>
+  <% end %>
+</div>

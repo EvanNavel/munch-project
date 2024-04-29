@@ -1,0 +1,25 @@
+<%= form_with(model: [ @user, @business ], url: user_business_path(@user), local: true, data: { turbo: false }) do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div>
+    <%= form.label :address %>
+    <%= form.text_field :address %>
+  </div>
+  <div>
+    <%= form.label :restaurant_type %>
+    <%= form.text_field :restaurant_type %>
+  </div>
+  <div>
+    <%= form.label :bio %>
+    <%= form.text_area :bio %>
+  </div>
+  <div>
+    <%= form.label :menu %>
+    <%= form.text_area :menu %>
+  </div>
+  <div>
+    <%= form.submit "Create Business Page" %>
+  </div>
+<% end %>

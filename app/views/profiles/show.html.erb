@@ -17,6 +17,9 @@
 
     <% if current_user == @user %>
       <%= link_to "Edit Profile", edit_user_profile_path(@user), class: "btn btn-secondary" %>
+      <% if @user.business.nil? %>
+        <%= link_to 'Create Business Page', new_user_business_path(@user), class: 'btn btn-primary' %>
+      <% end %>
     <% end %>
   </div>
 
@@ -36,13 +39,22 @@
     </div>
 
     <% if current_user == @user %>
-      <!-- Link to Cookbook -->
       <div style="margin-top: 20px;">
         <%= link_to 'Cookbook', user_cookbook_path(@user), class: 'btn btn-primary' %>
+      </div>
+
+    <% if @user.business %>
+        <%= link_to 'My Business Page', user_business_path(@user, @user.business), class: 'btn btn-info' %>
+      <% end %>
+    <% elsif @user.business %>
+      <div style="margin-top: 20px;">
+        <%= link_to 'Business Page', user_business_path(@user, @user.business), class: 'btn btn-info' %>
       </div>
     <% end %>
   </div>
 </div>
+
+
 
 <hr>
 

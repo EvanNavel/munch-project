@@ -5,6 +5,7 @@ class ProfilesController < ApplicationController
   
     def show
         @profile = @user.profile
+        @business = @user.business
         unless @profile
           redirect_to root_path, alert: "User profile not found."
         end
