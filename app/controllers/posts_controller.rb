@@ -6,6 +6,9 @@ class PostsController < ApplicationController
       tag = Tag.where('name ILIKE ?', "%#{params[:search]}%").first
       posts = tag ? Post.joins(:tags).where(tags: { id: tag.id }) : Post.none
       forks = tag ? Fork.joins(:tags).where(tags: { id: tag.id }) : Fork.none
+
+      # Add this line to search for post titles
+      posts = posts.or(Post.where('title ILIKE ?', "%#{params[:search]}%"))
     else
       posts = Post.all.includes(:likes, :user)
       forks = Fork.all.includes(:user)
