@@ -117,6 +117,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_031648) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.string "body"
@@ -174,4 +179,3 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_031648) do
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "users"
 end
-

@@ -30,13 +30,13 @@ class Post < ApplicationRecord
     has_one_attached :image
 
     has_many :likes, as: :likeable, :dependent => :destroy
-    has_many :likers, through: :likes, source: :user
+    has_many :likers, through: :likes, source: :user, :dependent => :destroy
 
     has_many :favorites, as: :favoritable, :dependent => :destroy
     has_many :favoriters, through: :favorites, source: :user, :dependent => :destroy
 
-    has_many :comments, as: :commentable, dependent: :destroy
-    has_many :flags, as: :flaggable, dependent: :destroy
+    has_many :comments, as: :commentable, :dependent => :destroy
+    has_many :flags, as: :flaggable, :dependent => :destroy
     has_many :forks
 
     validate :image_type, :image_size
