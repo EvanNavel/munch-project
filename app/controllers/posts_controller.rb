@@ -6,6 +6,10 @@ class PostsController < ApplicationController
       tag = Tag.where('name ILIKE ?', "%#{params[:search]}%").first
       posts = tag ? Post.joins(:tags).where(tags: { id: tag.id }) : Post.none
       forks = tag ? Fork.joins(:tags).where(tags: { id: tag.id }) : Fork.none
+
+      # Now searching for post titles, descriptions, ingredients, and directions
+      search_term = "%#{params[:search]}%"
+      posts = posts.or(Post.where('title ILIKE :search OR description ILIKE :search OR ingredients ILIKE :search OR directions ILIKE :search', search: search_term))
     else
       posts = Post.all.includes(:likes, :user)
       forks = Fork.all.includes(:user)
@@ -21,6 +25,7 @@ class PostsController < ApplicationController
 
     render :index
   end
+
 
   def show
     @post = Post.find(params[:id])
