@@ -3,10 +3,12 @@
 # Table name: posts
 #
 #  id          :bigint           not null, primary key
-#  body        :string
 #  cuisine     :string
+#  description :text
 #  difficulty  :string
+#  directions  :text
 #  flags_count :integer
+#  ingredients :text
 #  meal        :string
 #  title       :string
 #  created_at  :datetime         not null
@@ -27,7 +29,7 @@ class Post < ApplicationRecord
     belongs_to :user, class_name: 'User', foreign_key: 'user_id', inverse_of: :posts
 
     validates :title, presence: true
-    validates :body, presence: true
+    validates :description, :ingredients, :directions, presence: true
 
     has_one_attached :image
 

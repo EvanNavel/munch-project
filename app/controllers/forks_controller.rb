@@ -51,7 +51,7 @@ class ForksController < ApplicationController
   end
 
   def fork_params
-    params.require(:fork).permit(:title, :body, :image)
+    params.require(:fork).permit(:title, :description, :ingredients, :directions, :image)
   end
 
   def tag_params
