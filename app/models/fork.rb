@@ -36,8 +36,8 @@ class Fork < ApplicationRecord
   has_many :favorites, as: :favoritable, :dependent => :destroy
   has_many :favoriters, through: :favorites, source: :user, :dependent => :destroy
 
-  has_many :comments, as: :commentable, dependent: :destroy
-  has_many :flags, as: :flaggable, dependent: :destroy
+  has_many :comments, as: :commentable, :dependent => :destroy
+  has_many :flags, as: :flaggable, :dependent => :destroy
   has_many :forks
 
   validate :image_type, :image_size
@@ -59,15 +59,15 @@ class Fork < ApplicationRecord
 
   def liked_by?(user)
     likes.exists?(user: user)
-end
+  end
 
-def favorite_for(user)
+  def favorite_for(user)
     favorites.find_by(user: user)
   end
 
-def flagged?(user)
+  def flagged?(user)
     flags.exists?(user: user)
-end
+  end
 
   private
 

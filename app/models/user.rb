@@ -31,10 +31,10 @@ class User < ApplicationRecord
   )
   # Work
   has_many :likes, :dependent => :destroy
-  has_many :liked_posts, through: :likes, source: :post, :dependent => :destroy
+  has_many :liked_posts, through: :likes, source: :likeable, source_type: 'Post', :dependent => :destroy
 
   has_many :favorites, :dependent => :destroy
-  has_many :favorited_posts, through: :favorites, source: :post, :dependent => :destroy
+  has_many :favorited_posts, through: :favorites, source: :favoritable, source_type: 'Post', dependent: :destroy
 
   has_many :comments, :dependent => :destroy
   has_many :flags, :dependent => :destroy
@@ -42,15 +42,15 @@ class User < ApplicationRecord
 
   has_one :profile, :dependent => :destroy
 
-  has_many :following_associations, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
-  has_many :follower_associations, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
+  has_many :following_associations, class_name: "Follow", foreign_key: "follower_id", :dependent => :destroy
+  has_many :follower_associations, class_name: "Follow", foreign_key: "followed_id", :dependent => :destroy
 
-  has_many :following, through: :following_associations, source: :followed
-  has_many :followers, through: :follower_associations, source: :follower
+  has_many :following, through: :following_associations, source: :followed, :dependent => :destroy
+  has_many :followers, through: :follower_associations, source: :follower, :dependent => :destroy
 
   after_create :create_user_profile
 
-  has_one :business, dependent: :destroy
+  has_one :business, :dependent => :destroy
 
   private
 
