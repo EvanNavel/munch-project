@@ -42,6 +42,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "businesses", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.string "address"
+    t.string "restaurant_type"
+    t.text "bio"
+    t.text "menu"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_businesses_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.bigint "user_id", null: false
@@ -106,6 +118,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
     t.bigint "likeable_id"
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "posts", force: :cascade do |t|
@@ -175,6 +192,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "businesses", "users"
   add_foreign_key "comments", "users"
   add_foreign_key "favorites", "users"
   add_foreign_key "flags", "users"
