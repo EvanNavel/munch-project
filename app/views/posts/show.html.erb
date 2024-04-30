@@ -14,9 +14,9 @@
       <% end %>
       <ul class="list-group mb-3">
         <li class="list-group-item">Author: <%= link_to @post.user.email, user_profile_path(@post.user) %></li>
+        <li class="list-group-item">Meal: <%= @post.tag_list('meal') %></li>
         <li class="list-group-item">Difficulty: <%= @post.tag_list('difficulty') %></li>
         <li class="list-group-item">Cuisine: <%= @post.tag_list('cuisine') %></li>
-        <li class="list-group-item">Meal: <%= @post.tag_list('meal') %></li>
         <li class="list-group-item">Dietary: <%= @post.tag_list('dietary') %></li>
       </ul>
       <% if @post.image.attached? %>

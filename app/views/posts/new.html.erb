@@ -18,12 +18,10 @@
   </div>
 
   <div>
-    <%= f.label :cuisine, "Cuisine" %><br>
     <%= f.text_field :cuisine_tags, placeholder: 'e.g. American, Italian (separate with commas)', value: @post.tag_list('cuisine') %>
   </div>
 
   <div>
-    <%= f.label :dietary, "Dietary Restrictions" %><br>
     <%= f.text_field :dietary_tags, placeholder: 'e.g. Gluten Free, Vegan (separate with commas)', value: @post.tag_list('dietary') %>
   </div>
 

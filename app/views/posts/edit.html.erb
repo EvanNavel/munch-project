@@ -6,19 +6,15 @@
   <%= f.text_area :body %>
 
   <div>
-    <%= f.label :meal, "Type of Meal" %>
     <%= f.select :meal_tags, options_for_select(['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'], @post.tag_list('meal')), include_blank: true, class: 'form-control' %>
   </div>
 
   <div>
-    <%= f.label :difficulty, "Difficulty" %>
     <%= f.select :difficulty_tags, options_for_select(['Easy', 'Medium', 'Hard', 'Expert'], @post.tag_list('difficulty')), include_blank: true, class: 'form-control' %>
   </div>
 
-  <%= f.label :cuisine, "Cuisine" %>
   <%= f.text_field :cuisine_tags, placeholder: 'e.g. American, Italian (separate with commas)', value: @post.tag_list('cuisine') %>
 
-  <%= f.label :dietary, "Dietary Restrictions" %>
   <%= f.text_field :dietary_tags, placeholder: 'e.g. Gluten Free, Vegan (separate with commas)', value: @post.tag_list('dietary') %>
 
   <%= f.submit "Update Post", class: 'btn btn-primary' %>

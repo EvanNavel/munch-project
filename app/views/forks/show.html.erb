@@ -15,9 +15,9 @@
   <ul class="list-group mb-3">
     <li class="list-group-item">Forked by: <%= link_to @fork.user.email, user_profile_path(@fork.user) %></li>
     <li class="list-group-item">Original Author: <%= link_to @fork.post.user.email, post_path(@fork.post) %></li>
+    <li class="list-group-item">Meal: <%= @fork.tag_list('meal') %></li>
     <li class="list-group-item">Difficulty: <%= @fork.tag_list('difficulty') %></li>
     <li class="list-group-item">Cuisine: <%= @fork.tag_list('cuisine') %></li>
-    <li class="list-group-item">Meal: <%= @fork.tag_list('meal') %></li>
     <li class="list-group-item">Dietary: <%= @fork.tag_list('dietary') %></li>
   </ul>
 
