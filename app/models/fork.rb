@@ -38,8 +38,8 @@ class Fork < ApplicationRecord
   has_many :favorites, as: :favoritable, dependent: :destroy
   has_many :favoriters, through: :favorites, source: :user
 
-  has_many :comments, as: :commentable, dependent: :destroy
-  has_many :flags, as: :flaggable, dependent: :destroy
+  has_many :comments, as: :commentable, :dependent => :destroy
+  has_many :flags, as: :flaggable, :dependent => :destroy
 
   validates :title, :body, presence: true
 
