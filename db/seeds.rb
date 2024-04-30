@@ -7,12 +7,10 @@
 #   movies = Movie.create!([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create!(name: "Luke", movie: movies.first)
 
-# Ensuring idempotency in user creation
 cameron = User.find_or_create_by!(email: 'Cameroncox0904@gmail.com') do |user|
     user.password = 'password'
   end
 
-  # Creating or finding tags to avoid duplication
   meal_tags = {
     breakfast: Tag.find_or_create_by!(name: 'Breakfast', category: 'meal'),
     lunch: Tag.find_or_create_by!(name: 'Lunch', category: 'meal'),
@@ -40,14 +38,13 @@ cameron = User.find_or_create_by!(email: 'Cameroncox0904@gmail.com') do |user|
     low_carb: Tag.find_or_create_by!(name: 'Low Carb', category: 'dietary')
   }
 
-  # Posts array to maintain cleanliness and order
   posts_data = [
     {
       title: 'Grandma\'s Apple Pie',
       body: "A classic dessert with a sweet and tangy filling\n\n**Ingredients:**\n- 1 pie crust\n- 6 cups of peeled and sliced apples\n- 1 cup of sugar\n- 2 tablespoons of all-purpose flour\n- 1/2 teaspoon of ground cinnamon\n- 1/4 teaspoon of ground nutmeg\n- 1 tablespoon of lemon juice\n\n**Recipe:**\n1. Preheat your oven to 375 degrees F (190 degrees C).\n2. Place the apple slices into the pie crust.\n3. Mix the sugar, flour, cinnamon, nutmeg, and lemon juice in a bowl, then pour over the apples.\n4. Bake for about 50 minutes, or until the crust is golden brown.",
       user: cameron,
       tags: [
-        meal_tags[:snack], # Adjusted from dessert to snack for consistency
+        meal_tags[:snack],
         cuisine_tags[:american],
         difficulty_tags[:medium],
         dietary_tags[:gluten_free]

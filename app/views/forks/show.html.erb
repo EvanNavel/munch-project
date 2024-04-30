@@ -23,12 +23,22 @@
 
   <% if @fork.image.attached? %>
     <div>
-      <%= image_tag @fork.image %>
+      <%= image_tag @fork.image, style: 'max-height: 20em;' %>
     </div>
   <% end %>
 
-  <h2 class="mb-3">Recipe</h2>
-  <p class="mb-3"><%= @fork.body %></p>
+  <% if @fork.description.present? %>
+    <h2 class="mb-3">Description</h2>
+    <p class="mb-3"><%= @fork.description %></p>
+  <% end %>
+  <% if @fork.ingredients.present? %>
+    <h2 class="mb-3">Ingredients</h2>
+    <p class="mb-3"><%= @fork.ingredients %></p>
+  <% end %>
+  <% if @fork.directions.present? %>
+    <h2 class="mb-3">Directions</h2>
+    <p class="mb-3"><%= @fork.directions %></p>
+  <% end %>
 
   <% favorite = @fork.favorite_for(current_user) %>
   <% if favorite %>
