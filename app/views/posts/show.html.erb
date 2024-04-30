@@ -14,9 +14,10 @@
       <% end %>
       <ul class="list-group mb-3">
         <li class="list-group-item">Author: <%= link_to @post.user.email, user_profile_path(@post.user) %></li>
-        <li class="list-group-item">Difficulty: <%= @post.difficulty %></li>
-        <li class="list-group-item">Cuisine: <%= @post.cuisine %></li>
-        <li class="list-group-item">Meal: <%= @post.meal %></li>
+        <li class="list-group-item">Meal: <%= @post.tag_list('meal') %></li>
+        <li class="list-group-item">Difficulty: <%= @post.tag_list('difficulty') %></li>
+        <li class="list-group-item">Cuisine: <%= @post.tag_list('cuisine') %></li>
+        <li class="list-group-item">Dietary: <%= @post.tag_list('dietary') %></li>
       </ul>
       <% if @post.image.attached? %>
         <div>
@@ -46,24 +47,24 @@
           <p><%= comment.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
           <p><strong>Comment:</strong> <%= comment.body %></p>
           <% if current_user && comment.user == current_user %>
-          <%= button_to 'Delete', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            <%= button_to 'Delete', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           <% end %>
         </div>
       <% end %>
       <%= render partial: 'comments/form', locals: { commentable: @post } %>
 
       <div class="flag-button-container mt-3">
-      <% if current_user %>
-        <% current_user_flag = @post.flags.find_by(user: current_user) %>
-        <% if current_user_flag %>
-          <%= button_to 'Unflag', post_flag_path(@post, current_user_flag), method: :delete, class: 'btn btn-danger' %>
-        <% else %>
-          <%= button_to 'Flag this Recipe', post_flags_path(@post), method: :post, class: 'btn btn-warning' %>
+        <% if current_user %>
+          <% current_user_flag = @post.flags.find_by(user: current_user) %>
+          <% if current_user_flag %>
+            <%= button_to 'Unflag', post_flag_path(@post, current_user_flag), method: :delete, class: 'btn btn-danger' %>
+          <% else %>
+            <%= button_to 'Flag this Recipe', post_flags_path(@post), method: :post, class: 'btn btn-warning' %>
+          <% end %>
+          <% if @post.flags_count.to_i > 0 %>
+            <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
+          <% end %>
         <% end %>
-        <% if @post.flags_count.to_i > 0 %>
-          <span class="flag-count ml-2"><%= @post.flags_count %></span> Flags
-        <% end %>
-      <% end %>
       </div>
       <%= link_to 'Back To Posts', posts_path, class: 'btn btn-outline-secondary mt-3' %>
     </div>

@@ -22,6 +22,8 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Post < ApplicationRecord
+    include Taggable
+
     belongs_to :user, class_name: 'User', foreign_key: 'user_id', inverse_of: :posts
 
     validates :title, presence: true
@@ -32,6 +34,9 @@ class Post < ApplicationRecord
     has_many :likes, as: :likeable, :dependent => :destroy
     has_many :likers, through: :likes, source: :user, :dependent => :destroy
 
+    has_many :taggings, as: :taggable, :dependent => :destroy
+    has_many :tags, through: :taggings
+
     has_many :favorites, as: :favoritable, :dependent => :destroy
     has_many :favoriters, through: :favorites, source: :user, :dependent => :destroy
 
@@ -41,13 +46,32 @@ class Post < ApplicationRecord
 
     validate :image_type, :image_size
 
+    def self.search(term)
+      if term
+        where('title ILIKE :term OR body ILIKE :term', term: "%#{term}%")
+      else
+        all
+      end
+    end
+
+    def self.sorted(sort_by)
+      case sort_by
+      when 'date'
+        order(created_at: :desc)
+      when 'likes'
+        joins(:likes).group('posts.id').order('COUNT(likes.id) DESC')
+      else
+        order(created_at: :desc)
+      end
+    end
+
     def liked_by?(user)
         likes.exists?(user: user)
     end
 
     def favorite_for(user)
         favorites.find_by(user: user)
-      end
+    end
 
     def flagged?(user)
         flags.exists?(user: user)
@@ -61,17 +85,8 @@ class Post < ApplicationRecord
         forks.exists?(user: user)
     end
 
-    def display_attributes
-        {
-          title: title,
-          body: body,
-          meal: meal,
-          difficulty: difficulty,
-          cuisine: cuisine,
-          user_email: user.email,
-          created_at: created_at.strftime("%B %d, %Y"),
-          likes_count: likes.count
-        }
+    def tags_for(category)
+        tags.where(category: category).pluck(:name).join(', ')
     end
 
     private

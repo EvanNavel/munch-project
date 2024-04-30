@@ -2,8 +2,14 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    posts = Post.where("title ILIKE :search OR body ILIKE :search OR meal ILIKE :search OR difficulty ILIKE :search OR cuisine ILIKE :search", search: "%#{params[:search]}%").includes(:likes, :user)
-    forks = Fork.all.includes(:user)
+    if params[:search].present?
+      tag = Tag.where('name ILIKE ?', "%#{params[:search]}%").first
+      posts = tag ? Post.joins(:tags).where(tags: { id: tag.id }) : Post.none
+      forks = tag ? Fork.joins(:tags).where(tags: { id: tag.id }) : Fork.none
+    else
+      posts = Post.all.includes(:likes, :user)
+      forks = Fork.all.includes(:user)
+    end
 
     @items = (posts + forks).sort_by(&:created_at).reverse
 
@@ -31,6 +37,7 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
+    handle_tags(@post, tag_params)
     if @post.save
       flash[:success] = 'Blog post was successfully created.'
       redirect_to post_path(@post)
@@ -47,6 +54,7 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
+    handle_tags(@post, tag_params)
     if @post.update(post_params)
       flash[:success] = 'Post was successfully updated.'
       redirect_to post_path(@post)
@@ -58,8 +66,6 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-    @post.favorites.each(&:destroy)
-    @post.forks.each(&:destroy)
     @post.destroy
     flash[:success] = 'Post was successfully deleted.'
     redirect_to posts_url
@@ -78,6 +84,29 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :body, :meal, :difficulty, :cuisine, :image)
+    params.require(:post).permit(:title, :body, :image)
+  end
+
+  def tag_params
+    params.require(:post).permit(:meal_tags, :difficulty_tags, :cuisine_tags, :dietary_tags)
+  end
+
+  def handle_tags(post, tag_params)
+    %w[meal difficulty cuisine dietary].each do |category|
+      tag_names = tag_params["#{category}_tags"].to_s.split(',').map(&:strip).uniq
+      current_tags = post.tags.where(category: category).pluck(:name)
+
+      # Remove old tags
+      (current_tags - tag_names).each do |old_name|
+        old_tag = Tag.find_by(name: old_name, category: category)
+        post.tags.delete(old_tag) if old_tag
+      end
+
+      # Add new tags
+      (tag_names - current_tags).each do |new_name|
+        new_tag = Tag.find_or_create_by(name: new_name, category: category)
+        post.tags << new_tag unless post.tags.include?(new_tag)
+      end
+    end
   end
 end

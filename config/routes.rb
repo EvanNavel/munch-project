@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :likes, only: [:create, :destroy]
     resources :flags, only: [:create, :destroy]
     resources :favorites, only: [:create, :destroy]
+    resources :tags, only: [:create, :destroy]
+
   end
 
   resources :forks do
@@ -26,6 +28,7 @@ Rails.application.routes.draw do
     resources :likes, only: [:create, :destroy]
     resources :flags, only: [:create, :destroy]
     resources :favorites, only: [:create, :destroy]
+    resources :tags, only: [:create, :destroy]
   end
 
   resources :favorites, only: [:create, :destroy]

@@ -3,7 +3,7 @@
 
   <div class="text-right">
     <p>
-      Sort by: 
+      Sort by:
       <%= link_to 'Date', posts_path(sort_by: 'date') %> |
       <%= link_to 'Sweets', posts_path(sort_by: 'likes') %>
     </p>
@@ -15,7 +15,7 @@
         <div class="row">
           <div class="col-md-4">
             <% if item.image.attached? %>
-              <%= image_tag item.image, class: 'img-fluid', style: 'max-height: 12em;'%>
+              <%= image_tag item.image, class: 'img-fluid', style: 'max-height: 12em;' %>
             <% else %>
               <%= image_tag 'default.png', class: 'img-fluid', style: 'max-height: 200px; max-width: 260px' %>
             <% end %>
@@ -23,9 +23,13 @@
           <div class="col-md-8">
             <h2 class="card-title"><%= link_to item.title, item.is_a?(Post) ? post_path(item) : post_fork_path(item.post, item) %></h2>
             <p class="card-text">
-              <strong>Difficulty:</strong> <%= item.difficulty %><br>
-              <strong>Type Of Meal:</strong> <%= item.meal %><br>
-              <strong>Cuisine:</strong> <%= item.cuisine %><br>
+              <% [ 'meal', 'difficulty', 'cuisine', 'dietary'].each do |category| %>
+                <strong><%= category.titleize %>:</strong>
+                <% item.tag_list(category).split(', ').each do |tag| %>
+                  <%= link_to tag, posts_path(search: tag), class: 'tag-badge' %>
+                <% end %>
+                <br>
+              <% end %>
               <strong>User:</strong> <%= item.user.email %><br>
               <strong>Date:</strong> <%= item.created_at.strftime("%B %d, %Y") %><br>
               <strong>Sweets:</strong> <%= pluralize(item.likes.count, 'Sweet') %>
