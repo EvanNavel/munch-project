@@ -25,8 +25,18 @@
         </div>
       <% end %>
       <hr>
-      <h2 class="mb-3">Recipe</h2>
-      <p class="mb-3 card-text"><%= @post.body %></p>
+      <% if @post.description.present? %>
+        <h2 class="mb-3">Description</h2>
+        <p class="mb-3 card-text"><%= @post.description %></p>
+      <% end %>
+      <% if @post.ingredients.present? %>
+        <h2 class="mb-3">Ingredients</h2>
+        <p class="mb-3 card-text"><%= @post.ingredients %></p>
+      <% end %>
+      <% if @post.directions.present? %>
+        <h2 class="mb-3">Directions</h2>
+        <p class="mb-3 card-text"><%= @post.directions %></p>
+      <% end %>
       <%= link_to "Fork this Recipe", new_post_fork_path(@post), class: "btn btn-primary mb-3" %>
       <% favorite = @post.favorite_for(current_user) %>
       <% if favorite %>

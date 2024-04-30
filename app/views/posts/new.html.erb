@@ -3,7 +3,9 @@
 <%= bootstrap_form_with model: @post, url: posts_path, method: :post, local: true do |f| %>
 
   <%= f.text_field :title %>
-  <%= f.text_area :body %>
+  <%= f.text_area :description, placeholder: 'Summary of the post' %>
+  <%= f.text_area :ingredients, placeholder: 'List of ingredients required' %>
+  <%= f.text_area :directions, placeholder: 'Steps to prepare the recipe' %>
 
   <div>
     <%= f.label :meal %><br>

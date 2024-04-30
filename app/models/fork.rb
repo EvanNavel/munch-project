@@ -41,7 +41,8 @@ class Fork < ApplicationRecord
   has_many :comments, as: :commentable, :dependent => :destroy
   has_many :flags, as: :flaggable, :dependent => :destroy
 
-  validates :title, :body, presence: true
+  validates :title, presence: true
+  validates :description, :ingredients, :directions, presence: true
 
   validate :image_type, :image_size
 

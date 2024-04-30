@@ -3,10 +3,12 @@
 # Table name: posts
 #
 #  id          :bigint           not null, primary key
-#  body        :string
 #  cuisine     :string
+#  description :text
 #  difficulty  :string
+#  directions  :text
 #  flags_count :integer
+#  ingredients :text
 #  meal        :string
 #  title       :string
 #  created_at  :datetime         not null

@@ -7,8 +7,18 @@
   </div>
 
   <div>
-    <%= form.label :body %>
-    <%= form.text_area :body, value: @post.body %>
+    <%= form.label :description %>
+  <%= form.text_area :description, placeholder: 'Summary of the post', value: @post.description %>
+  </div>
+
+  <div>
+  <%= form.label :ingredients %>
+  <%= form.text_area :ingredients, placeholder: 'List of ingredients required', value: @post.ingredients %>
+  </div>
+
+  <div>
+  <%= form.label :directions %>
+  <%= form.text_area :directions, placeholder: 'Steps to prepare the recipe', value: @post.directions %>
   </div>
 
   <div>

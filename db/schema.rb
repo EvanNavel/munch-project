@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_29_033326) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_033326) do
     t.string "difficulty"
     t.string "cuisine"
     t.integer "flags_count", default: 0
+    t.text "description"
+    t.text "ingredients"
+    t.text "directions"
     t.index ["post_id"], name: "index_forks_on_post_id"
     t.index ["user_id"], name: "index_forks_on_user_id"
   end
@@ -132,6 +135,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_033326) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.integer "flags_count"
+    t.text "description"
+    t.text "ingredients"
+    t.text "directions"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

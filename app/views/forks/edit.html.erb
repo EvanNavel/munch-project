@@ -2,7 +2,9 @@
 
 <%= bootstrap_form_with model: @fork, local: true do |f| %>
   <%= f.text_field :title %>
-  <%= f.text_area :body %>
+  <%= f.text_area :description, placeholder: 'Summary of the post' %>
+  <%= f.text_area :ingredients, placeholder: 'List of ingredients required' %>
+  <%= f.text_area :directions, placeholder: 'Steps to prepare the recipe' %>
 
   <div>
     <%= f.select :meal_tags, options_for_select(['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'], selected: @fork.tag_list('meal')), include_blank: true, class: 'form-control' %>
