@@ -52,7 +52,6 @@
 
     <!-- Business Page Links -->
     <% if @user.business %>
-      <%= link_to 'My Business Page', user_business_path(@user, @user.business), class: 'btn btn-info' %>
       <div style="margin-top: 20px;">
         <%= link_to 'Business Page', user_business_path(@user, @user.business), class: 'btn btn-info' %>
       </div>
