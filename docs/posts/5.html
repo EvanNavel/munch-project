@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Munch</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="../assets/application-49d5789b56db626c4c07af36a025ef74c29594865044aa3a76b44aecaa9389c7.css" />
+    </head>
+
+  <body>
+<div class="snapshot-banner">
+  Static snapshot of the original Munch capstone app (Spring 2024), browsing as the seed user alice.
+  Buttons and forms are disabled.
+  <a href="https://naveevan.com/projects/munch">Interactive demo</a> &middot;
+  <a href="https://github.com/EvanNavel/munch-project">Source</a>
+</div>
+<style>
+  .snapshot-banner { background: #212529; color: #f8f9fa; font-size: 13px; text-align: center; padding: 6px 12px; }
+  .snapshot-banner a { color: #ffb066; }
+  .snapshot-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #212529; color: #fff;
+    padding: 10px 16px; border-radius: 6px; font-size: 14px; z-index: 2000; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .snapshot-toast.show { opacity: 1; }
+</style>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-orange">
+  <div class="container-fluid">
+    <a class="navbar-brand mb-1" href="../posts.html">Munch</a>
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link #{active_class(posts_path)}" href="../posts.html">Recipes</a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link " href="../users/1/profile.html">My Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="../users/1/cookbook.html">My Cookbook</a>
+          </li>
+      </ul>
+
+      <form class="d-flex" action="../posts.html" method="get" id="search-form">
+        <input class="form-control me-2" type="search" placeholder="Search Recipes" aria-label="Search" name="search" value="">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link " href="#" data-snapshot-disabled>Hi, alice.smith@example.com</a>
+          </li>
+          <li class="nav-item">
+            <form class="button_to" method="post" action="#"><input type="hidden" name="_method" value="delete" autocomplete="off" /><button data-turbo="false" class="btn btn-outline-light" type="submit">Sign Out</button></form>
+          </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    
+
+    <main role="main" class="container">
+      <div class="container mt-5">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h1 class="mb-4 card-title">Blueberry Pancakes</h1>
+      <div class="sweets-counter mb-3">
+          <strong>2 Sweets</strong>
+      </div>
+        <form class="button_to" method="post" action="#"><input type="hidden" name="_method" value="delete" autocomplete="off" /><button class="btn btn-warning mb-3" type="submit">Unsweet</button></form>
+      <ul class="list-group mb-3">
+        <li class="list-group-item">Author: <a href="../users/5/profile.html">eva.clarke@example.com</a></li>
+        <li class="list-group-item">Meal: Breakfast</li>
+        <li class="list-group-item">Difficulty: Medium</li>
+        <li class="list-group-item">Cuisine: American</li>
+        <li class="list-group-item">Dietary: Vegan</li>
+      </ul>
+        <div>
+          <img style="max-height: 20em;" src="../images/Blueberry-Pancakes.jpg" />
+        </div>
+      <hr>
+        <h2 class="mb-3">Description</h2>
+        <p class="mb-3 card-text">Fluffy pancakes bursting with blueberries.</p>
+        <h2 class="mb-3">Ingredients</h2>
+        <p class="mb-3 card-text">- 1 cup all-purpose flour
+- 1 tablespoon sugar
+- 1 teaspoon baking powder
+- 1/2 teaspoon baking soda
+- 1/4 teaspoon salt
+- 3/4 cup buttermilk
+- 1/4 cup milk
+- 1 egg
+- 2 tablespoons butter, melted
+- 1 cup fresh blueberries</p>
+        <h2 class="mb-3">Directions</h2>
+        <p class="mb-3 card-text">1. Mix the dry ingredients in a bowl.
+2. In another bowl, mix the buttermilk, milk, egg, and melted butter, then add to the dry ingredients.
+3. Stir in the blueberries.
+4. Pour 1/4 cup of batter onto a hot griddle for each pancake. Cook until bubbles form on the surface, then flip and cook until golden brown.</p>
+      <a class="btn btn-primary mb-3" href="5/forks/new.html">Fork this Recipe</a>
+        <form class="button_to" method="post" action="#"><button class="btn btn-success mb-3" type="submit">Add to Cookbook</button></form>
+      <hr>
+      <h2 class="mb-3">Comments</h2>
+      <form action="#" accept-charset="UTF-8" method="post">
+  <div class="field">
+    <label for="comment_body">Comment</label>
+    <textarea name="comment[body]" id="comment_body">
+</textarea>
+  </div>
+  <div class="actions">
+    <input type="submit" name="commit" value="Submit Comment" data-disable-with="Submit Comment" />
+  </div>
+</form>
+
+      <div class="flag-button-container mt-3">
+            <form class="button_to" method="post" action="#"><button class="btn btn-warning" type="submit">Flag this Recipe</button></form>
+      </div>
+      <a class="btn btn-outline-secondary mt-3" href="../posts.html">Back To Posts</a>
+    </div>
+  </div>
+</div>
+
+    </main>
+  <script src="../assets/bootstrap.min-67c48d88a8e0be178058aacb338b084191ed6d65c8fef751c50248202cf1488a.js"></script>
+<script>
+(function () {
+  var root = "../";
+  var tags = ["American", "Breakfast", "Chinese", "Dinner", "Easy", "Gluten Free", "Hard", "Indian", "Low Carb", "Lunch", "Medium", "Mexican", "Snack", "Vegan"];
+  var toast = document.createElement("div");
+  toast.className = "snapshot-toast";
+  document.body.appendChild(toast);
+  function notify(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { toast.classList.remove("show"); }, 2200);
+  }
+  document.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (e.target.id === "search-form") {
+      var term = (e.target.querySelector("input[name=search]").value || "").trim().toLowerCase();
+      var tag = tags.find(function (t) { return t.toLowerCase() === term; });
+      if (tag) { location.href = root + "posts@search=" + tag.replace(/ /g, "+") + ".html"; return; }
+      notify("Search needs the live app. Try a tag like Vegan, Dinner, or Mexican.");
+      return;
+    }
+    notify("This is a static snapshot, so buttons and forms are disabled.");
+  }, true);
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[data-snapshot-disabled]");
+    if (a) { e.preventDefault(); notify("That page needs the live app."); }
+  });
+})();
+</script>
+</body>
+</html>

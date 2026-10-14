@@ -4,7 +4,7 @@ A full-stack recipe-sharing social platform built with Ruby on Rails. Users can 
 
 Built as a collaborative capstone project at the University of Memphis (Spring 2024).
 
-**[Live demo on naveevan.com](https://naveevan.com/projects/munch)** · [GitHub Pages mirror](https://evannavel.github.io/munch-project/)
+**[Interactive demo on naveevan.com](https://naveevan.com/projects/munch)** · [Original app snapshot on GitHub Pages](https://evannavel.github.io/munch-project/)
 
 ![Screen Shot 2024-04-30 at 01 40 02](https://github.com/memphis-cs-projects/sour-patch-kidz-s24/assets/47510094/f2a01841-0b95-481d-bd3e-7594f239b08f)
 
@@ -12,11 +12,11 @@ Built as a collaborative capstone project at the University of Memphis (Spring 2
 
 ---
 
-## About the Demo
+## About the Demos
 
-The live demo is not the Rails app in this repository. It's a standalone, read-only preview of the recipe feed that I rebuilt for my portfolio so it can run in the browser without a server, database, or account. It uses sample data and covers sorting, tag filtering, and Sweets. The source is [`docs/index.html`](docs/index.html).
+**Interactive demo (naveevan.com):** a lightweight preview of the recipe feed that I rebuilt for my portfolio so it runs in the browser without a server, database, or account. It uses sample data and covers sorting, tag filtering, and Sweets.
 
-The full application in this repo is the team's original capstone project, with accounts, comments, the Cookbook, follows, flagging, business pages, and recipe forking.
+**Original app snapshot (GitHub Pages):** the team's actual Rails app, run locally with seed data and saved as static pages from the point of view of the seed user alice. It shows how the capstone looked as built: the feed, recipe and fork pages, comments, profiles with follows, the Cookbook, business pages, and the create and edit forms. Since GitHub Pages can't run Rails, buttons and forms are disabled, and the search box only works for tag names. The snapshot lives in [`docs/`](docs/).
 
 ---
 
@@ -91,7 +91,7 @@ Then visit `http://localhost:3000`. Every seeded account uses the password `pass
 Everything up to commit [`d0fd1f5`](https://github.com/EvanNavel/munch-project/tree/d0fd1f5) (April 30, 2024) is the team's project as submitted for the class. Everything below was added afterward, on my own, while preparing the project for my portfolio:
 
 - **README rewrite**: a project overview, my contributions, setup steps, and links to the demo
-- **Portfolio demo**: a static preview of the recipe feed, embedded on naveevan.com and mirrored on GitHub Pages from [`docs/`](docs/)
+- **Demos**: a lightweight interactive preview of the recipe feed for naveevan.com, and a static snapshot of the original app on GitHub Pages ([`docs/`](docs/)) with sample forks, comments, Sweets, Cookbook saves, and follows added to the seed data
 - **Authorization**: only a post's, fork's, comment's, or business page's owner can edit or delete it. The class version hid those buttons in the views but didn't enforce ownership in the controllers.
 - **Flagging**: a user can flag an item only once (enforced by a validation and a unique index), and the flag, comment, and Cookbook routes now accept only posts and forks
 - **Search**: matches every tag that fits the search term instead of only the first one, and searches fork titles and text as well as their tags
