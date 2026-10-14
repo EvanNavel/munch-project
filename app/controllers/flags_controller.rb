@@ -1,5 +1,5 @@
 class FlagsController < ApplicationController
-  before_action :authenticate_user!, except: [:system_destroy]
+  before_action :authenticate_user!
   before_action :set_flaggable
 
   def create
@@ -14,7 +14,7 @@ class FlagsController < ApplicationController
 
   def destroy
     @flag = @flaggable.flags.find_by(user: current_user)
-    if @flag.destroy
+    if @flag&.destroy
       redirect_to polymorphic_path(@flaggable), notice: 'Flag removed successfully.'
     else
       redirect_to polymorphic_path(@flaggable), alert: 'Failed to remove flag.'
@@ -24,15 +24,8 @@ class FlagsController < ApplicationController
   private
 
   def set_flaggable
-    params.each do |name, value|
-      if name.ends_with?("_id")
-        model = name.chomp("_id").classify.constantize
-        @flaggable = model.find(value)
-        break
-      end
-    end
-  rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: "#{model.name} not found."
+    @flaggable = find_parent_record
+    redirect_to root_path, alert: 'Item not found.' unless @flaggable
   end
 
   def check_flag_threshold_and_destroy

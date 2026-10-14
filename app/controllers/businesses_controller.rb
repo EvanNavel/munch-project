@@ -2,7 +2,7 @@ class BusinessesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user
   before_action :set_business, only: [:show, :edit, :update, :destroy]
-  before_action :set_business, only: [:edit, :update, :show, :destroy]
+  before_action :authorize_user, only: [:new, :create, :edit, :update, :destroy]
 
   def show
     @business 
@@ -14,7 +14,6 @@ class BusinessesController < ApplicationController
 
 
   def create
-    @user = User.find(params[:user_id])
     @business = @user.build_business(business_params)
     if @business.save
       redirect_to user_business_path(@user), notice: 'Business page created successfully.'
@@ -53,6 +52,12 @@ class BusinessesController < ApplicationController
     unless @business
       redirect_to root_path, alert: "Business page not found."
     end
+  end
+
+  def authorize_user
+    return if @user == current_user
+
+    redirect_to root_path, alert: 'You are not authorized to perform this action.'
   end
 
   def business_params

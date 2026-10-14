@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
+ActiveRecord::Schema[7.0].define(version: 2026_10_14_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
     t.string "favoritable_type"
     t.bigint "favoritable_id"
     t.index ["favoritable_type", "favoritable_id"], name: "index_favorites_on_favoritable"
+    t.index ["user_id", "favoritable_type", "favoritable_id"], name: "index_favorites_on_user_and_favoritable", unique: true
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
@@ -82,6 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
     t.string "flaggable_type"
     t.bigint "flaggable_id"
     t.index ["flaggable_type", "flaggable_id"], name: "index_flags_on_flaggable"
+    t.index ["user_id", "flaggable_type", "flaggable_id"], name: "index_flags_on_user_and_flaggable", unique: true
     t.index ["user_id"], name: "index_flags_on_user_id"
   end
 
@@ -117,6 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_032615) do
     t.string "likeable_type"
     t.bigint "likeable_id"
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_and_likeable", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 

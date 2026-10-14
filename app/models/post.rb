@@ -48,25 +48,6 @@ class Post < ApplicationRecord
 
     validate :image_type, :image_size
 
-    def self.search(term)
-      if term
-        where('title ILIKE :term OR body ILIKE :term', term: "%#{term}%")
-      else
-        all
-      end
-    end
-
-    def self.sorted(sort_by)
-      case sort_by
-      when 'date'
-        order(created_at: :desc)
-      when 'likes'
-        joins(:likes).group('posts.id').order('COUNT(likes.id) DESC')
-      else
-        order(created_at: :desc)
-      end
-    end
-
     def liked_by?(user)
         likes.exists?(user: user)
     end

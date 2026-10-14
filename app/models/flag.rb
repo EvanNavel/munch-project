@@ -22,4 +22,5 @@ class Flag < ApplicationRecord
   belongs_to :user
   belongs_to :flaggable, polymorphic: true, counter_cache: true
   validates :flaggable_type, :flaggable_id, presence: true
+  validates :user_id, uniqueness: { scope: [:flaggable_type, :flaggable_id] }
 end
