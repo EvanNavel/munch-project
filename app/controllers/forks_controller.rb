@@ -1,6 +1,7 @@
 class ForksController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_fork, only: [:show, :edit, :update, :destroy]
+  before_action -> { redirect_unless_owner(@fork) }, only: [:edit, :update, :destroy]
 
   def new
     @post = Post.find(params[:post_id])

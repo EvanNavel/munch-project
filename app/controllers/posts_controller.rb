@@ -1,15 +1,12 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action -> { redirect_unless_owner(@post) }, only: [:edit, :update, :destroy]
 
   def index
     if params[:search].present?
-      tag = Tag.where('name ILIKE ?', "%#{params[:search]}%").first
-      posts = tag ? Post.joins(:tags).where(tags: { id: tag.id }) : Post.none
-      forks = tag ? Fork.joins(:tags).where(tags: { id: tag.id }) : Fork.none
-
-      # Now searching for post titles, descriptions, ingredients, and directions
-      search_term = "%#{params[:search]}%"
-      posts = posts.or(Post.where('title ILIKE :search OR description ILIKE :search OR ingredients ILIKE :search OR directions ILIKE :search', search: search_term))
+      posts = search(Post, params[:search]).includes(:likes, :user)
+      forks = search(Fork, params[:search]).includes(:user)
     else
       posts = Post.all.includes(:likes, :user)
       forks = Fork.all.includes(:user)
@@ -28,7 +25,6 @@ class PostsController < ApplicationController
 
 
   def show
-    @post = Post.find(params[:id])
     @parent = @post
     @commentable = @post
     @comment = Comment.new
@@ -53,12 +49,10 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @post = Post.find(params[:id])
     render :edit
   end
 
   def update
-    @post = Post.find(params[:id])
     handle_tags(@post, tag_params)
     if @post.update(post_params)
       flash[:success] = 'Post was successfully updated.'
@@ -70,23 +64,25 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(params[:id])
     @post.destroy
     flash[:success] = 'Post was successfully deleted.'
     redirect_to posts_url
   end
 
-  def fork
+  private
+
+  def set_post
     @post = Post.find(params[:id])
-    @fork = current_user.forks.build(post: @post)
-    if @fork.save
-      redirect_to @fork, notice: 'Recipe forked successfully.'
-    else
-      redirect_to @post, alert: 'Failed to fork the recipe.'
-    end
   end
 
-  private
+  # Matches tag names, titles, descriptions, ingredients, and directions
+  def search(model, term)
+    table = model.table_name
+    columns = %w[title description ingredients directions].map { |c| "#{table}.#{c} ILIKE :term" }
+    model.left_joins(:tags)
+         .where(["tags.name ILIKE :term", *columns].join(' OR '), term: "%#{model.sanitize_sql_like(term)}%")
+         .distinct
+  end
 
   def post_params
     params.require(:post).permit(:title, :description, :ingredients, :directions, :image)

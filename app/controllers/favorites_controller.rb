@@ -1,6 +1,6 @@
 class FavoritesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_favoritable
+  before_action :set_favoritable, only: [:create]
 
   def create
     @favorite = current_user.favorites.build(favoritable: @favoritable)
@@ -24,9 +24,7 @@ class FavoritesController < ApplicationController
   private
 
   def set_favoritable
-    resource, id = request.path.split('/')[1, 2]
-    @favoritable = resource.singularize.classify.constantize.find(id)
-  rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: 'Item not found.'
+    @favoritable = find_parent_record
+    redirect_to root_path, alert: 'Item not found.' unless @favoritable
   end
 end

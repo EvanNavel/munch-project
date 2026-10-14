@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: [:destroy]
 
   def create
     @comment = @commentable.comments.build(comment_params)
@@ -22,14 +22,13 @@ class CommentsController < ApplicationController
   private
 
   def set_commentable
-    resource, id = request.path.split('/')[1, 2]
-    @commentable = resource.singularize.classify.constantize.find(id)
-  rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: 'Item not found.'
+    @commentable = find_parent_record
+    redirect_to root_path, alert: 'Item not found.' unless @commentable
   end
 
   def set_comment
-    @comment = @commentable.comments.find(params[:id])
+    @comment = @commentable.comments.find_by(id: params[:id], user: current_user)
+    redirect_to polymorphic_path(@commentable), alert: 'You are not authorized to perform this action.' unless @comment
   end
 
   def comment_params
